@@ -1,0 +1,1 @@
+-nostdlib -lc-newlib -lm-newlib -L"C:/bada/1.2.1/Model/Wave_LP4/Target" -L"C:/bada/1.2.1/Tools/Toolchains/ARM/arm-samsung-nucleuseabi/lib" -L"C:/bada/1.2.1/Tools/Toolchains/ARM/lib/gcc/arm-samsung-nucleuseabi/4.4.1" -L"C:/bada/1.2.1/IDE/workspace/Denkreactor/lib" -shared -o"FlashTest.exe"

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<project version="2">
+  <!--some comment-->
+  <output>
+    <movie outputType="Application" />
+    <movie input="" />
+    <movie path="..\..\Denkreactor\Res\main.swf" />
+    <movie fps="24" />
+    <movie width="480" />
+    <movie height="800" />
+    <movie version="8" />
+    <movie minorVersion="0" />
+    <movie platform="Flash Player" />
+    <movie background="#000000" />
+  </output>
+  <!--some comment-->
+  <classpaths>
+    <class path="src" />
+  </classpaths>
+  <!--some comment-->
+  <build>
+    <option verbose="False" />
+    <option strict="False" />
+    <option infer="False" />
+    <option useMain="True" />
+    <option useMX="False" />
+    <option warnUnusedImports="False" />
+    <option traceMode="FlashConnect" />
+    <option traceFunction="" />
+    <option libraryPrefix="" />
+    <option excludeFile="" />
+    <option groupClasses="False" />
+    <option frame="1" />
+    <option keep="True" />
+  </build>
+  <!--some comment-->
+  <compileTargets>
+    <compile path="src\Main.as" />
+  </compileTargets>
+  <!--some comment-->
+  <library>
+    <asset embedded="1" bitmap="False" path="src\resources\800\carbon.png" />
+  </library>
+  <!--some comment-->
+  <hiddenPaths>
+    <!-- example: <hidden path="..." /> -->
+  </hiddenPaths>
+  <!--some comment-->
+  <preBuildCommand />
+  <!--some comment-->
+  <postBuildCommand alwaysRun="False" />
+  <!--some comment-->
+  <options>
+    <option showHiddenPaths="False" />
+    <option testMovie="Default" />
+  </options>
+  <!--some comment-->
+  <storage />
+</project>
