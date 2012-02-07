@@ -82,8 +82,6 @@ class bada.Utils {
 
 	public static
 	function extend() {
-		
-		
 		Function.bind = function() {
 			if (arguments.length < 2 && typeof arguments[0] == "undefined") return this;
 			var args = arguments,
@@ -94,69 +92,19 @@ class bada.Utils {
 				return __method.apply(object, args.concat(arguments));
 			}
 		}
-
-/* obsolete		MovieClip.prototype.isVisible = function() : Boolean {
-			if (this._visible == false) return false;
-			//if (this._x === -1000) return false;
-			return true;
+		
+		Function.prototype.bind = function() {
+			if (typeof arguments[0] == "undefined") return this;
+			var args = arguments,
+			// Array.prototype.slice.call(arguments),
+			__method = this,
+			object = args.shift();
+			return function() {
+				return __method.apply(object, args.concat(arguments));
+			}
 		}
-
-		TextField.prototype.setText = function(text: String) : TextField {
-			this.text = text;
-			if (this['_font']) this.setTextFormat(this['_font']);
-			return this;
-		}
-*/
 	}
-	//public static function $(target:MovieClip){
-	//    if (target.css == null){
-	//        target.css = MovieClip.prototype.css;
-	//    }
-	//}
-	//
-	//public static function css(movie:MovieClip, _css:Object){
-	//    
-	//    var width = movie._width || _css['width'],
-	//    height = movie._height || _css['height'];
-	//                    
-	//     for(var prop in _css){
-	//            //if (typeof css[prop] == 'Number'){
-	//            //    css[prop] = adjustNumericValue(css[prop]);
-	//            //}
-	//            
-	//            if (typeof movie['_'+prop] !== 'undefined'){
-	//                movie['_'+prop] = _css[prop];
-	//                continue;
-	//            }
-	//            
-	//            switch(prop){
-	//                case 'bottom':
-	//                    movie._y = Stage.height - _css[prop] - height;
-	//                    continue;
-	//                case 'right':
-	//                    movie._x = Stage.width - _css[prop] - width;
-	//                    continue;
-	//                case 'top':
-	//                    movie._y = _css[prop];
-	//                    continue;
-	//                case 'left':
-	//                    movie._x = _css[prop];
-	//                    continue;
-	//                case 'backgroundColor':
-	//                    movie.beginFill(_css[prop],_css['opacity'] || 100);
-	//                    movie.moveTo(0,0);
-	//                    movie.lineTo(0,0);
-	//                    movie.lineTo(width,0);
-	//                    movie.lineTo(width,height);
-	//                    movie.lineTo(0,height);
-	//                    movie.lineTo(0,0);
-	//                    movie.endFill();
-	//                    continue;
-	//            }
-	//            Bada.log('unknown css prop',prop);
-	//        }
-	//        return movie;
-	//}
+
 
 	public static function totalDepth(movie: MovieClip) : Number {
 		var depth = movie.getDepth();

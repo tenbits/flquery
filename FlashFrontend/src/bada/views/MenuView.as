@@ -17,11 +17,17 @@ class bada.views.MenuView extends bada.dom.widgets.View {
 	
 	
 
-    function MenuView(parent: Div, data: Object) {
-        super(parent, data);
+	private var name:String;
+	function MenuView(parent: Div, data: Object) {
+		super(parent, data);
 		
+		this.name = 'SomeName!!!';
 		
-    }
+		var f = function() {
+			Bada.log('infunction',this.name);			
+		};
+		
+	}
 	
 	
 	

@@ -22,6 +22,7 @@ class bada.Game {
 	public static function startApp() : Void {
 		
 		
+		
 		StyleSheets.register(
 			'#viewMenu > div', {
 				backgroundColor:0xff0000,
@@ -31,7 +32,7 @@ class bada.Game {
 				margin:20,
 				border:[10,0x00ff00, 50]
 			},
-			'#subRed', {
+			'#subGradient', {
 				height:200
 			},
 			'#viewMenu > span',{
@@ -42,11 +43,11 @@ class bada.Game {
 			});
 		
 		Dom.body.append("
-			<view id='viewMenu' background='carbon.png repeat'>
-				<div id='subRed' background='gradient(0xff0000,0x00ff00,0x0000ff)'/>
+			<menuView id='viewMenu' background='carbon.png repeat'>
+				<div id='subGradient' background='gradient(0xff0000,0x00ff00,0x0000ff)'/>
 				<div/>
 				<span>Hello world!</span>
-			</view>
+			</menuView>
 			");
 		
 		

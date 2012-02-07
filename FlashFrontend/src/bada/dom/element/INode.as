@@ -378,6 +378,7 @@ class bada.dom.element.INode{
 
     /** events handler */
 	public function bind(event:String, handler:Function):INode {
+		
 		if (this._events == null) this._events = new EventHandler();
 		this._events.bind(event, handler);
 		
