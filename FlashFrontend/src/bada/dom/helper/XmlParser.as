@@ -18,28 +18,37 @@ class bada.dom.helper.XmlParser
 	}
 	
 	private static function parseNode(xml:XMLNode):Object {
-		var node:Object = { _css: { }};
 		if (xml.nodeType == 3) return xml.nodeValue;
-		node.tag = xml.nodeName;
 		
-		switch(node.tag) {
-			case 'span':
-				node._html = '';
-				break;
+		if (xml.nodeName == 'br') {
+			Bada.log('return string', xml.toString());
+			return xml.toString();
 		}
 		
+		var node:Object = { 
+			tag : xml.nodeName,
+			_css: { }
+		};
 		
 		for (var key in xml.attributes) {
 			handleAttribute(node, key, xml.attributes[key]);
 		}
 		
+		switch(node.tag) {
+			case 'span':
+				node._html = '';
+				for (var i:Number = 0; i < xml.childNodes.length; i++) {
+					node._html += xml.childNodes[i].toString();
+				}
+				return node;
+		}
+		
 		if (xml.hasChildNodes()) {
-			node._children = [];
-			
+			node._children = [];			
 			for (var i:Number = 0; i < xml.childNodes.length; i++) 
 			{
 				var value = parseNode(xml.childNodes[i]);
-				if (typeof value == 'string') node._html = value;
+				if (typeof value == 'string') node._html += value;
 				else if (typeof value == 'object') node._children.push(value);				
 			}
 		}

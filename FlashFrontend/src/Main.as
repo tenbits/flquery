@@ -1,6 +1,7 @@
 import bada.dom.CSS;
 import bada.dom.Dom;
 import bada.dom.events.EventManager;
+import bada.dom.NodesFactory;
 import bada.Events;
 import bada.Proxy;
 import bada.Utils;
@@ -24,9 +25,9 @@ class Main
 		Proxy.setup();
 		
 		///** register custom widgets */
-		bada.dom.NodesFabric.controls['mainView'] = MainView;
-		bada.dom.NodesFabric.controls['menuView'] = MenuView;
-		bada.dom.NodesFabric.controls['infoView'] = InfoView;
+		NodesFactory.controls['mainView'] = MainView;
+		NodesFactory.controls['menuView'] = MenuView;
+		NodesFactory.controls['infoView'] = InfoView;
 		
 		var start = getTimer();
 		bada.Game.startApp();

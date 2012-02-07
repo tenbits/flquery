@@ -1,7 +1,7 @@
 ﻿import bada.dom.element.Div;
 import bada.dom.events.EventManager;
 import bada.dom.helper.XmlParser;
-import bada.dom.NodesFabric;
+import bada.dom.NodesFactory;
 import bada.dom.element.INode;
 import bada.dom.widgets.*;
 import bada.dom.element.*;
@@ -23,16 +23,16 @@ class bada.dom.Dom {
 
 	public static function setup(){
 		Launcher.setup();        
-		NodesFabric.controls['div'] = Div;
-		NodesFabric.controls['span'] = Span;
-		NodesFabric.controls['button'] = bada.dom.element.Button;
-		NodesFabric.controls['img'] = Img;
-		NodesFabric.controls['input'] = Input;
-		NodesFabric.controls['checkbox'] = CheckBox;
+		NodesFactory.controls['div'] = Div;
+		NodesFactory.controls['span'] = Span;
+		NodesFactory.controls['button'] = bada.dom.element.Button;
+		NodesFactory.controls['img'] = Img;
+		NodesFactory.controls['input'] = Input;
+		NodesFactory.controls['checkbox'] = CheckBox;
 		
-		NodesFabric.controls['view'] = View;
-		NodesFabric.controls['badaMenu'] = BadaMenu;
-		NodesFabric.controls['debugView'] = DebugView;		
+		NodesFactory.controls['view'] = View;
+		NodesFactory.controls['badaMenu'] = BadaMenu;
+		NodesFactory.controls['debugView'] = DebugView;		
 		caurina.transitions.properties.ColorShortcuts.init();
 		body = new Div(_root, 'body', {
 				width:Bada.screen.width,
@@ -41,15 +41,7 @@ class bada.dom.Dom {
 		
 		EventManager.setup();
 	}
-
-	private function Dom(){
-		
-	}
-
-	public static function get(selector:String):INode{
-		return NodesFabric.get(selector);
-	}
-
+	
 
 	public static function parse(html:String):Object {
 		return XmlParser.parseHtml(html);

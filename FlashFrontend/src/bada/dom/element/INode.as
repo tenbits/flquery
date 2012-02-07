@@ -298,6 +298,14 @@ class bada.dom.element.INode{
 		return null;
 	}
 	
+	public function childAt():Number {
+		for (var i:Number = 0; i < this._parent._children.length; i++) 
+		{
+			if (this._parent._children[i] === this) return i;
+		}
+		return -1;
+	}
+	
 	/**
 	 * if no current node found, return prev. from end;
 	 */

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <project version="2">
-  <!--some comment-->
+  <!-- Output SWF options -->
   <output>
     <movie outputType="Application" />
     <movie input="" />
@@ -13,11 +13,11 @@
     <movie platform="Flash Player" />
     <movie background="#000000" />
   </output>
-  <!--some comment-->
+  <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
   </classpaths>
-  <!--some comment-->
+  <!-- Build options -->
   <build>
     <option verbose="False" />
     <option strict="False" />
@@ -33,27 +33,27 @@
     <option frame="1" />
     <option keep="True" />
   </build>
-  <!--some comment-->
+  <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
     <compile path="src\Main.as" />
   </compileTargets>
-  <!--some comment-->
+  <!-- Assets to embed into the output SWF -->
   <library>
-    <asset embedded="1" bitmap="False" path="src\resources\800\carbon.png" />
+    <asset path="src\resources\800\carbon.png" bitmap="False" />
   </library>
-  <!--some comment-->
+  <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
     <!-- example: <hidden path="..." /> -->
   </hiddenPaths>
-  <!--some comment-->
+  <!-- Executed before build -->
   <preBuildCommand />
-  <!--some comment-->
+  <!-- Executed after build -->
   <postBuildCommand alwaysRun="False" />
-  <!--some comment-->
+  <!-- Other project options -->
   <options>
     <option showHiddenPaths="False" />
     <option testMovie="Default" />
   </options>
-  <!--some comment-->
+  <!-- Plugin storage -->
   <storage />
 </project>

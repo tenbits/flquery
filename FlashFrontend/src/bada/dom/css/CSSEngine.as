@@ -62,7 +62,9 @@ class bada.dom.css.CSSEngine
 		}
 		
 		if (css.backgroundColor != null || css.backgroundGradient != null || css.border != null) {
-			BackgroundHelper.render2(Div(node));
+			if (node.style.height != null){
+				BackgroundHelper.render2(Div(node));
+			}
 		}	
 		
 		/** transformations */
@@ -71,10 +73,10 @@ class bada.dom.css.CSSEngine
 		
 	}
 	
-	static function reposition(node:INode) {
+	static function reposition(node:INode, last:INode) {
 		if (node.style.position == 'absolute') return;
 		
-		var last:INode = node.prev('style[position=static]');
+		if (last == null) last = node.prev('style[position=static]');
 		//Bada.log('prev', last);
 		if (last == null) {
 			if (node._css.x == null) node.x = node.parent.style.paddingLeft  + node.style.marginLeft;

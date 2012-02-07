@@ -6,7 +6,7 @@ import bada.dom.events.EventManager;
 import bada.dom.helper.EventHandler;
 import bada.dom.helper.XmlParser;
 import bada.dom.element.INode;
-import bada.dom.NodesFabric;
+import bada.dom.NodesFactory;
 import bada.dom.Scroller;
 import bada.dom.element.Span;
 import bada.Graphics;
@@ -171,9 +171,9 @@ class bada.dom.element.Div extends INode{
 		if (children instanceof Array) {
 			for (var i = 0, length = children.length, item; item = children[i], i < length; i++) {		
 				if (item instanceof INode)  
-					NodesFabric.create(container, item);				
+					NodesFactory.create(container, item);				
 				else 
-					this._children.push(NodesFabric.create(container,item));
+					this._children.push(NodesFactory.create(container,item));
 			}
 		}
 		else if (children instanceof Div) {
@@ -186,7 +186,7 @@ class bada.dom.element.Div extends INode{
 		}
 		else if (typeof children === 'object') {
 			if (children._name == 'scroller' || children._name == 'overflowMask') container = this;
-			this._children.push(NodesFabric.create(container, children));
+			this._children.push(NodesFactory.create(container, children));
 		}
 		
 		this.afterChildAppend(this._children[this._children.length - 1]);
@@ -269,6 +269,14 @@ class bada.dom.element.Div extends INode{
 			}
 		}
 		
+		if (this.style.position == 'static' && 
+			this._css.height == null && 
+			child.style.position == 'static' &&
+			child.style.display !== 'none') {			
+			
+			this.style.height = child.y + child.height + this.style.paddingBottom;
+			this.onChildResized(child);			
+		}
 		
 		if (this._css.align == 'horizontal') {
 			var width = this.width;
@@ -283,9 +291,29 @@ class bada.dom.element.Div extends INode{
 			child.y = (this.height - child.height) / 2;
 		}
 		
-		//if (this._
 	}
 	
+	public function onChildResized(child:INode, lastChild:INode) {
+		
+		var pos:Number = child.childAt();
+		var last:INode = child;
+		if (pos > -1) {
+			for (var i:Number = pos + 1; i < this._children.length; i++) 
+			{
+				if (this._children[i].style.position === 'static') {
+					CSSEngine.reposition(this._children[i], last);
+					last = this._children[i];
+				}
+			}
+		}
+		
+		if (lastChild == null) lastChild = this.last('style[position=static]');
+		
+		this.style.height = lastChild.y + lastChild.height + this.style.paddingBottom;
+		
+		if (this.style.position === 'static') Div(this.parent).onChildResized(this);
+		BackgroundHelper.render2(this);	
+	}
 	
 	public function refreshScroll():Void {
 		if (this._children.length == 0) return;

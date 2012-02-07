@@ -42,7 +42,7 @@ class bada.Proxy{
 				handler: {
 					touchEnd:function() {
 						if (Proxy.callback) Proxy.callback(1);
-						Dom.get('confirmDialog').toggle(false);
+						Dom.body.first('#confirmDialog').toggle(false);
 					}
 				}
 			},{
@@ -57,7 +57,7 @@ class bada.Proxy{
 				handler: {
 					touchEnd:function() {
 						if (Proxy.callback) Proxy.callback(0);
-						Dom.get('confirmDialog').toggle(false);
+						Dom.body.first('#confirmDialog').toggle(false);
 					}
 				}
 			}]
@@ -70,7 +70,7 @@ class bada.Proxy{
 			Proxy.setupDialogs();
 			Proxy.confirm = function(_text:String, _callback:Function){
 				Proxy.callback = _callback;
-				Dom.get('confirmDialog').ztop().toggle(true).first('text').asSpan().text(_text);
+				Dom.body.first('#confirmDialog').ztop().toggle(true).first('text').asSpan().text(_text);
 			}
 			Proxy.confirm(text, callback);
 		}else {
@@ -83,7 +83,7 @@ class bada.Proxy{
 		if (Bada.isFlashLite() == false){
 			Proxy.setupDialogs();
 			Proxy.alert = function(_text:String){
-				Dom.get('confirmDialog').ztop().toggle(true).first('text').asSpan().text(_text);
+				Dom.body.first('#confirmDialog').ztop().toggle(true).first('text').asSpan().text(_text);
 			}
 			Proxy.confirm(message);
 		}else {

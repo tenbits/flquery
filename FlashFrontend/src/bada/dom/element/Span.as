@@ -65,6 +65,10 @@ class bada.dom.element.Span extends INode{
 			this._shadowSpan.text(text);            
 		}
 		
+		if (this.style.position === 'static' && this.style.height == -1) {
+			Div(this.parent).onChildResized(this);
+		}
+		
 		return this;
 	}
 	
@@ -78,6 +82,11 @@ class bada.dom.element.Span extends INode{
 		
 		if (this._shadowSpan){
 			this._shadowSpan.html(arguments[0]);            
+		}
+		
+		
+		if (this.style.position === 'static' && this.style.height == -1) {
+			Div(this.parent).onChildResized(this);
 		}
 	}
     
@@ -101,7 +110,6 @@ class bada.dom.element.Span extends INode{
 		
 		CSSEngine.calculateCss(this, this._css);
 		
-		//CSS.prepairCss(span, span._css);
 		
 		parentMovie.createTextField('text' + depth, depth, this.style.x, this.style.y, this.style.width || 200, this.style.height || 40);
 		this._textField = parentMovie['text' + depth];
@@ -117,9 +125,6 @@ class bada.dom.element.Span extends INode{
 		}else {
 			this._textField.text = this._text || '';			
 		}        
-		
-		Bada.log('rendered span', this.style.width, this.style.height, this._text, this._textField);
-		//CSS.renderCss(span);
 		CSSEngine.render(this, this._css);
 		
 		if (this.style.verticalAlign == 'middle') {

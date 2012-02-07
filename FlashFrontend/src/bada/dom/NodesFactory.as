@@ -4,7 +4,7 @@ import bada.dom.element.Div;
 import bada.dom.element.Span;
 import bada.dom.element.Button;
 
-class bada.dom.NodesFabric{
+class bada.dom.NodesFactory{
     public static var controls:Object = {};
     public static var _ids = {};
     
