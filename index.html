@@ -1,6 +1,84 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel='stylesheet' type='text/css' href='gh-pages/styles.css'/>
+</head>
 <body>
-	<b>Hello world</b>
+	<div class='caption'>
+		<a href='https://github.com/tenbits/flquery/'>Flash Lite Query Library &raquo;</a>
+		</div>
+	<div class='page'>
+		<h1>What's all this about?</h1>
+		<p>CSS, HTML and jQuery for Flash Lite.</p>
+		<h1>Why?<small>(History)</small></h1>
+		<p>It was one task: Application development for Samsung Bada Platform.<br>
+		   Possibilities: 
+		   <ul>
+				<li>C++ bada api development -  no, thank you - too many code, difficult to build custom UI.</li>
+				<li>HTML5-based apps - rush development, but no, thank you - very low performance (css transitions and animations are almost unpossible).</li>
+				<li>Flash Lite apps - nativ performance feeling, and this project is aimed to bring many html/css/jquery goodies to flash/actionscript2</li>
+				</ul>
+				</p>
+		<h1>So, what is it?</h1>
+		<div class='description'>
+			<ul>
+				<li><b>DOM.</b>
+					<div class='tree'> 
+						<div>
+							element(body)								
+							<div> element 
+								<div> element </div>
+								</div>
+							</div>
+						<div> element 
+							<div> ... </div>
+							</div>
+						</div>
+					</li>
+				<li>
+					<b>Elements / Widgets.</b>
+						<ul>
+							<li>div</li>
+							<li>span</li>
+							<li>input</li>
+							<li>button</li>
+							<li>view</li>
+							</ul>
+					</li>
+				<li> 
+					<b>Custom Elements/Widgets <small>(with custom tags)</small>.</b> Inherit from <i>Div</i> and create your element/widget (checkbox for example) and associate 
+					this element with a custom tag: <code> bada.dom.NodesFabric.controls['checkbox'] = MyCheckboxClass </code></li>
+				<li>
+					<b>StyleSheets.</b> Supported styles, see <a href='https://github.com/tenbits/flquery/blob/master/FlashFrontend/src/bada/dom/css/StyleSheet.as'>StyleSheet.styles</a>
+					</li>		
+				<li>
+					<b>XmlParser.</b>
+					<p>
+						
+					</p>
+					see more at <i>Game.as</i>
+					</li>
+				<li>
+					<b>Selectors.</b> <code>Dom.body.find('#container').toggle(false);</code></li>
+				<li>
+					<b>Events.</b> <code>Dom.body.find('#container').bind('touchEnd', this.doSmth.bind(this))</code>
+							<code>Dom.body.find('#container').bind('customEvent', this.doSmth.bind(this))</code>
+							<code>Dom.body.find('#container').trigger('customEvent', argument1, argument2)</code>
+							</li>
+			</ul>
+		</div>
+		<h1>Does smbd. need this?</h1>
+		<div class='description'>
+			This library makes simple to develop FlashLite 3.1 Applications. But does smbd. need this? 
+				<blockquote>
+					I do not know, so i'm developing it for a moment for my use. Write little documentation. If sombody has interests, please mail me.
+					</blockquote>
+			</div>
+				
+	</div>
+	<footer>
+		 };
+	</footer>
 </body>
 </html>

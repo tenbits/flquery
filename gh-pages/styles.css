@@ -1,0 +1,46 @@
+body, html {
+	margin:0; padding:0;
+	font-family: sans-serif;
+}
+.caption {
+	position:absolute;
+}
+.page, footer{
+	width: 60%; min-width: 500px; margin: 0 auto;
+	background-color:#fafafa;
+	border-left:2px solid gray;
+	border-right:2px solid gray;
+	padding: 10px 20px;
+}
+code {
+	display:block;
+	margin-left:20px;
+	padding:2px;
+	background-color:#eeeeee;
+	font-family:'Courier New', sans-serif;
+	letter-spacing:1px;
+	font-size:.8em;
+}
+.description > ul > li {
+	margin:10px;
+}
+p {
+	padding: 0px 0px 0px 15px;
+	margin:0;
+}
+
+.tree div {
+	padding-left:15px;
+	border-left: 1px dotted gray;
+}
+
+blockquote {
+	border-left:  4px solid #aaa;
+	padding-left:10px;
+}
+footer {
+	height:100px;
+	color:#fafafa;
+	font-size:2em;
+	background-color:#333;
+}
