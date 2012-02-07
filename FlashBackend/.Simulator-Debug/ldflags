@@ -1,1 +1,0 @@
--L"C:/bada/1.2.1/Model/WaveWQ_LP1_v1.1/Simulator" -L"C:/bada/1.2.1/Lib" -L"C:/bada/1.2.1/IDE/workspace/FlashTest/lib" -shared -o"FlashTest.exe"
