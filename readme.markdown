@@ -1,7 +1,7 @@
 ###Flash Lite Query Library###
 
-`StyleSheets.register(
-
+StyleSheets.register(
+			
 			'#viewMenu > div', {
 				backgroundColor:0xff0000,
 				position:'static',
@@ -28,4 +28,4 @@
 			</view>
 			")
 		.find('#subRed')
-		.bind('touchEnd', Function.bind(this.doSmth,this));`
+		.bind('touchEnd', Function.bind(this.doSmth,this));
