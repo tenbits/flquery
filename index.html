@@ -48,7 +48,7 @@
 					</li>
 				<li> 
 					<b>Custom Elements/Widgets <small>(with custom tags)</small>.</b> Inherit from <i>Div</i> and create your element/widget (checkbox for example) and associate 
-					this element with a custom tag: <code> bada.dom.NodesFabric.controls['checkbox'] = MyCheckboxClass </code></li>
+					this element with a custom tag: <code> bada.dom.NodesFactory.controls['checkbox'] = MyCheckboxClass </code></li>
 				<li>
 					<b>StyleSheets.</b> Supported styles, see <a href='https://github.com/tenbits/flquery/blob/master/FlashFrontend/src/bada/dom/css/StyleSheet.as'>StyleSheet.styles</a>
 					</li>		
@@ -68,6 +68,44 @@
 							</li>
 			</ul>
 		</div>
+		<h1>Sample.</h1>
+		<div class='description'>
+		<div class="csharp" style="font-family:monospace;color: #006; border: 1px solid #d0d0d0; background-color: #f0f0f0;">StyleSheets<span style="color: #008000;">.</span><span style="color: #0000FF;">register</span><span style="color: #008000;">&#40;</span><br />
+&nbsp; &nbsp; &nbsp; <span style="color: #666666;">'#viewMenu &gt; div'</span>, <span style="color: #008000;">&#123;</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; backgroundColor<span style="color: #008000;">:</span>0xff0000,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; position<span style="color: #008000;">:</span><span style="color: #666666;">'static'</span>,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; borderRadius<span style="color: #008000;">:</span><span style="color: #FF0000;">20</span>,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; margin<span style="color: #008000;">:</span><span style="color: #FF0000;">20</span>,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; padding<span style="color: #008000;">:</span><span style="color: #FF0000;">10</span>,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; border<span style="color: #008000;">:</span><span style="color: #008000;">&#91;</span><span style="color: #FF0000;">2</span>,0x00ff00, <span style="color: #FF0000;">90</span><span style="color: #008000;">&#93;</span><br />
+&nbsp; &nbsp; &nbsp; <span style="color: #008000;">&#125;</span>,<br />
+&nbsp; &nbsp; &nbsp; <span style="color: #666666;">'#subGradient'</span>, <span style="color: #008000;">&#123;</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; height<span style="color: #008000;">:</span><span style="color: #FF0000;">200</span><br />
+&nbsp; &nbsp; &nbsp; <span style="color: #008000;">&#125;</span>,<br />
+&nbsp; &nbsp; &nbsp; <span style="color: #666666;">'#viewMenu &gt; div &gt; span'</span>,<span style="color: #008000;">&#123;</span><br />
+&nbsp; &nbsp; &nbsp; &nbsp; color<span style="color: #008000;">:</span>0xffffff,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; fontSize<span style="color: #008000;">:</span><span style="color: #FF0000;">40</span>,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; position<span style="color: #008000;">:</span><span style="color: #666666;">'static'</span>,<br />
+&nbsp; &nbsp; &nbsp; &nbsp; textAlign<span style="color: #008000;">:</span><span style="color: #666666;">'center'</span><br />
+&nbsp; &nbsp; &nbsp; <span style="color: #008000;">&#125;</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">;</span><br />
+&nbsp; &nbsp; <br />
+&nbsp; &nbsp; Dom<span style="color: #008000;">.</span><span style="color: #0000FF;">body</span><span style="color: #008000;">.</span><span style="color: #0000FF;">append</span><span style="color: #008000;">&#40;</span><span style="color: #666666;">&quot;<br />
+&nbsp; &nbsp; &nbsp; &lt;menuView id='viewMenu' background='carbon.png repeat'&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;div id='subGradient' background='gradient(0xff0000,0x00ff00,0x0000ff)'/&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt; <br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span&gt;&lt;b&gt;Hello&lt;/b&gt; &lt;i&gt;world!&lt;/i&gt;&lt;/span&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br />
+&nbsp; &nbsp; &nbsp; &nbsp; &lt;div style='height:100;'/&gt;&nbsp; &nbsp; &nbsp; &nbsp; <br />
+&nbsp; &nbsp; &nbsp; &lt;/menuView&gt;<br />
+&nbsp; &nbsp; &nbsp; &quot;</span><span style="color: #008000;">&#41;</span><span style="color: #008000;">;</span><br />
+&nbsp; &nbsp; </div>
+		
+		</div>
+		
+		
+		
+		
+		
 		<h1>Does smbd. need this?</h1>
 		<div class='description'>
 			This library makes simple to develop FlashLite 3.1 Applications. But does smbd. need this? 
