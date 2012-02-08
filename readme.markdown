@@ -2,3 +2,5 @@
 
 ----------
 @see  http://tenbits.github.com/flquery
+
+@IDE http://flashdevelop.org
