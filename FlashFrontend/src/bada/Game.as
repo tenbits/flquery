@@ -19,8 +19,7 @@ import bada.views.MainView;
 class bada.Game {
 	
 	
-	public static function startApp() : Void {	
-		
+	public static function startApp() : Void {			
 		StyleSheets.register(
 			'#viewMenu > div', {
 				backgroundColor:0xff0000,
