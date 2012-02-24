@@ -101,7 +101,7 @@ class bada.dom.widgets.BadaMenu extends Div
 		this.first('menuPanel').toggle(true);
 		
 		this.animate( {
-			_y: this._parent.height - this.height,
+			y: this._parent.height - this.height,
 			transition:'easeoutexpo',
 			time:.2
 		});
@@ -116,7 +116,7 @@ class bada.dom.widgets.BadaMenu extends Div
 		
 		this.first('btnMenuOpen').toggle(true);
 		this.animate( {
-			_y: this._parent.height - 54,
+			y: this._parent.height - 54,
 			transition:'easeoutexpo',
 			time:.2,
 			onComplete: Function.bind(function() {

@@ -81,7 +81,7 @@ class bada.dom.css.BackgroundHelper
 		movie.endFill();
 	}
 	
-	public static function doDraw(div:Div, _css:Object, width:Number, height:Number) {
+	/*public static function doDraw(div:Div, _css:Object, width:Number, height:Number) {
 		
 		var hasBorder = div.borderTopWidth > 0 || div.borderRightWidth > 0 || div.borderBottomWidth > 0 || div.borderLeftWidth > 0;
 		
@@ -141,7 +141,56 @@ class bada.dom.css.BackgroundHelper
 		}
 
 		movie.endFill();
-	}
+	}*/
 	
+	
+	public static function	fillBackground(movie:MovieClip, 
+					color:Number, 
+					width:Number, 
+					height:Number, 
+					borderRadius:Number, 
+					opacity:Number) {
+		
+		movie.clear();		
+		movie.beginFill(color, opacity || 100);
+		
+		
+		//if (hasBorder) movie.lineStyle(div.borderTopWidth, div.borderTopColor, div.borderTopOpacity, false, 'normal','none');
+		
+	  
+		movie.moveTo(borderRadius, 0);
+	  
+		movie.lineTo(width - borderRadius, 0);
+		if (borderRadius > 0){
+			  movie.curveTo(width, 0, width, borderRadius);
+			  movie.lineTo(width, borderRadius);
+		}
+		
+		//if (hasBorder) movie.lineStyle(div.borderRightWidth, div.borderRightColor, div.borderRightOpacity,false, 'normal','none');
+		movie.lineTo(width, height - borderRadius);
+		if (borderRadius > 0){
+		  movie.curveTo(width, height, width - borderRadius, height);
+		  movie.lineTo(width - borderRadius, height);
+		}
+		
+		
+		//if (hasBorder) movie.lineStyle(div.borderBottomWidth, div.borderBottomColor, div.borderBottomOpacity,false, 'normal','round');
+		movie.lineTo(borderRadius, height);
+		
+		
+		//if (hasBorder) movie.lineStyle(div.borderLeftWidth, div.borderLeftColor, div.borderLeftOpacity,false, 'normal','none');
+		if (borderRadius > 0){
+		  movie.curveTo(0, height, 0, height - borderRadius);
+		  movie.lineTo(0, height - borderRadius);
+		}
+	  
+		
+		movie.lineTo(0, borderRadius);
+		if (borderRadius > 0){
+		  movie.curveTo(0, 0, borderRadius, 0);
+		  movie.lineTo(borderRadius, 0);
+		}
+		movie.endFill();
+	}
 	
 }

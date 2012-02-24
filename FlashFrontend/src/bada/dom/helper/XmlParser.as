@@ -41,6 +41,11 @@ class bada.dom.helper.XmlParser
 					node._html += xml.childNodes[i].toString();
 				}
 				return node;
+			case 'button':				
+				if (xml.hasChildNodes()) {
+					node._text = xml.childNodes[0].nodeValue;
+				}
+				return node;
 		}
 		
 		if (xml.hasChildNodes()) {
@@ -77,14 +82,20 @@ class bada.dom.helper.XmlParser
 				parseStyleBackground(node, value);
 				return true;
 			case 'border':
-				/**
-				 *  width color opacity
-				 */
-				//-parseStyleBorder(node, value);
-				node._css.border = value;		
+				if (value.indexOf('borderImage') === 0) {
+					/** source width cropX cropY cropWidth cropHeight */				
+					node._css.borderImage = value.substring(12, value.length - 1);
+				}
+				else {
+					/** width color opacity */				
+					node._css.border = value;		
+				}
+				return true;
+			case 'class':
+				node._class = value;				
 				return true;
 		}
-		return true;
+		
 		if (key.indexOf('data-') == 0) {
 			key = key.substring(5, key.length - 1);
 			if (node._data == null) node._data = { };

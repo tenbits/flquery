@@ -172,6 +172,7 @@ class bada.Graphics
 		if (w == null) w = movie._width;
 		if (h == null) h = movie._height;
 		
+		movie.clear();
 		var brd:MovieClip = Utils.attachMovie(movie, resource);
 		
 		var source:BitmapData = Graphics.fromMovie(brd);
@@ -180,7 +181,7 @@ class bada.Graphics
 		var target:BitmapData = new BitmapData(w, h, true, 0xffffff);
 		
 		if (cropped instanceof Rectangle) {
-			var _n:BitmapData =  Graphics.cropN(source, new Rectangle(0, 0, source.width, source.height / 2));		
+			var _n:BitmapData =  Graphics.cropN(source, cropped);		
 			source.dispose();
 			source = _n;
 		}

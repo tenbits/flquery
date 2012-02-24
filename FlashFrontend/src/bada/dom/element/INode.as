@@ -1,6 +1,7 @@
 import bada.*;
 import bada.dom.*;
 import bada.dom.animation.AnimationHelper;
+import bada.dom.css.CssClass;
 import bada.dom.css.CSSEngine;
 import bada.dom.css.StyleSheet;
 import bada.dom.element.Div;
@@ -25,9 +26,11 @@ class bada.dom.element.INode{
 	private var _textField:TextField;
 
 	public var _canvas:BitmapData;
-	public var _css: Object;
-	public var _class: String;
-	public var _className:Object; // string or array
+	
+	public var _css: Object;	
+	public var _classNames:Object; 
+	public var _classes:/*bada.dom.css.CssClass*/ Array;
+	public var _mergedCss:Object;
 	
 	public var _id: String;
 	public var _name: String;
@@ -39,6 +42,7 @@ class bada.dom.element.INode{
 	public var onresize:Function;
 
 	public var style:StyleSheet;
+	public var enabled:Boolean;
 
 	public function INode(id:String){
 		_counter++;		
@@ -55,12 +59,14 @@ class bada.dom.element.INode{
 	
 	public function animate():INode{
 		if (arguments[0] === false){
-			Tweener.removeTweens(_movie);
+			//Tweener.removeTweens(_movie);
+			Tweener.removeTweens(this);
 		}else{
 			var data = arguments[0];
 			if (data.transition == null) data.transition = 'linear';
 			if (_movie){
-				Tweener.addTween(_movie,data);
+				//Tweener.addTween(_movie,data);
+				Tweener.addTween(this, data);
 			}
 		}
 		return this;
@@ -92,22 +98,10 @@ class bada.dom.element.INode{
 
     public function css():INode{
 		if (typeof arguments[0] == 'object') {
-			var css_ = arguments[0];
-			//CSS.renderCss(this, Helper.extend(null, arguments[0]));
-			if (this._tagName == 'span') {
-				Bada.log('span, css', 
-					this.asSpan().text() || this.asSpan().html(), 
-					this._textField,
-					this._textField._parent);
-			}
-			Helper.extend(this._css, css_);
-			/*if (this._movie == null && this._textField == null) {				
-				
-			}
-			else {*/
-			CSSEngine.calculateCss(this, css_);
-			CSSEngine.render(this, css_);
-			//}
+			var css_ = arguments[0];			
+			Helper.extend(this._css, css_);			
+			CSSEngine.calculateCss(this, css_);			
+			CSSEngine.render(this, css_);						
 		}
 		else if (typeof arguments[0] === 'string'){
 			if (arguments.length == 1) {
@@ -193,7 +187,7 @@ class bada.dom.element.INode{
 			case '_':
 				return this._name != null && selector === '_' + this._name;
 			case '.':
-				return this._class != null && selector === '.' + this._class;
+				return this._classNames != null && this._classNames.hasOwnProperty(selector);
 			case 's':
 				if (selector.indexOf('style[', 0) == 0) {
 					var paar = selector.substring(6, selector.length - 1).split('=');
@@ -498,7 +492,7 @@ class bada.dom.element.INode{
 	
 	public function set rotation(value:Number):Void {
 		var pivot:Point = this.style.rotationPivot;
-		Rotator.rotate(this._movie || this._textField, 
+		Rotator.rotateNode(this, 
 			(this.style.rotation = value),  
 			pivot != null ? pivot.x : null, 
 			pivot != null ? pivot.y : null,
@@ -566,7 +560,7 @@ class bada.dom.element.INode{
 	/** borders */
 	
 	/** top */
-	public function set borderTopColor(value:Number):Void {
+	/*public function set borderTopColor(value:Number):Void {
 		_css.borderTopColor = value;
     }
     public function get borderTopColor():Number {
@@ -583,10 +577,10 @@ class bada.dom.element.INode{
     }
     public function get borderTopOpacity():Number {
 		return (_css.borderTopOpacity == null) ? 100 : _css.borderTopOpacity;
-    }
+    }*/
 	
 	/** right */
-	public function set borderRightColor(value:Number):Void {
+	/*public function set borderRightColor(value:Number):Void {
 		_css.borderRightColor = value;
     }
     public function get borderRightColor():Number {
@@ -603,10 +597,10 @@ class bada.dom.element.INode{
     }
     public function get borderRightOpacity():Number {
 		return (_css.borderRightOpacity == null) ? 100 : _css.borderRightOpacity;
-    }
+    }*/
 	
 	/** bottom */
-	public function set borderBottomColor(value:Number):Void {
+	/*public function set borderBottomColor(value:Number):Void {
 		_css.borderBottomColor = value;
     }
     public function get borderBottomColor():Number {
@@ -623,10 +617,10 @@ class bada.dom.element.INode{
     }
     public function get borderBottomOpacity():Number {
 		return (_css.borderBottomOpacity == null) ? 100 : _css.borderBottomOpacity;
-    }
+    }*/
 	
 	/** left */
-	public function set borderLeftColor(value:Number):Void {
+	/*public function set borderLeftColor(value:Number):Void {
 		_css.borderLeftColor = value;
     }
     public function get borderLeftColor():Number {
@@ -643,38 +637,58 @@ class bada.dom.element.INode{
     }
     public function get borderLeftOpacity():Number {
 		return (_css.borderLeftOpacity == null) ? 100 : _css.borderLeftOpacity;
-    }
+    }*/
 	
 	
 	
 	/** border radius */
-	public function set borderRadiusTopLeft(value:Number):Void {
+	/*public function set borderRadiusTopLeft(value:Number):Void {
 		_css.borderRadiusTopLeft = value;
-    }
-    public function get borderRadiusTopLeft():Number {
+	}
+	public function get borderRadiusTopLeft():Number {
 		return (_css.borderRadiusTopLeft == null) ? 0 : _css.borderRadiusTopLeft;
-    }
+	}
 	public function set borderRadiusTopRight(value:Number):Void {
 		_css.borderRadiusTopRight = value;
-    }
-    public function get borderRadiusTopRight():Number {
+	}
+	public function get borderRadiusTopRight():Number {
 		return (_css.borderRadiusTopRight == null) ? 0 : _css.borderRadiusTopRight;
-    }
+	}
 	public function set borderRadiusBottomRight(value:Number):Void {
 		_css.borderRadiusBottomRight = value;
-    }
-    public function get borderRadiusBottomRight():Number {
+	}
+	public function get borderRadiusBottomRight():Number {
 		return (_css.borderRadiusBottomRight == null) ? 0 : _css.borderRadiusBottomRight;
-    }
-	
+	}
+
 	public function set borderRadiusBottomLeft(value:Number):Void {
 		_css.borderRadiusBottomLeft = value;
-    }
-    public function get borderRadiusBottomLeft():Number {
+	}
+	public function get borderRadiusBottomLeft():Number {
 		return (_css.borderRadiusBottomLeft == null) ? 0 : _css.borderRadiusBottomLeft;
-    }
-	
+	}*/
 
+
+	/** movie */
+	public function get xscale():Number {
+		return this._movie._xscale;
+	}
+	public function set xscale(value):Void {
+		this._movie._xscale = value;
+	}
+	public function get yscale():Number {
+		return this._movie._yscale;
+	}
+	public function set yscale(value):Void {
+		this._movie._yscale = value;
+	}
+	public function get alpha():Number {
+		return this._movie._alpha;
+	}
+	public function set alpha(value):Void {
+		this._movie._alpha = value;
+	}
+	
 	/* animations */
 	function fadeOut(time:Object):INode {
 		if (time  == null) time = .4;
@@ -689,8 +703,68 @@ class bada.dom.element.INode{
 	
 	
 	function hasClass(className:String):Boolean {
-		if (this._className == null) return false;
-		if (typeof this._className === 'string') return this._className === className;
-		return this._className.hasOwnProperty(className);
+		if (this._classNames == null) return false;		
+		return this._classNames.hasOwnProperty(className);
 	}
+	
+	function addClass(className:String):INode {		
+		if (this.hasClass(className)) return this;		
+		var cssclass:CssClass = StyleSheets.getClassForNode(className, this);		
+		
+		if (this._classNames == null) this._classNames = { };
+		this._classNames[className] = null;
+		
+		if (cssclass == null) return this;
+		
+		if (this._classes == null) this._classes = [];
+		this._classes.push(cssclass);
+		
+		var css_ = Helper.extend(null, cssclass.css);
+		CSSEngine.calculateCss(this, css_);			
+		CSSEngine.render(this, css_);			
+		
+		return this;
+	}
+	
+	function removeClass(className:String):INode {
+		if (this._classNames == null) return this;
+		/*if (this._classNames[className] == null) {
+			delete this._classNames[className];
+			return this;
+		}
+		*/
+		if (this.hasClass(className) == false) return this;
+		delete this._classNames[className];
+		
+		var class_:CssClass;
+		for (var i:Number = 0; i < this._classes.length; i++) 
+		{
+			if (this._classes[i].className == className) {
+				class_ = this._classes.splice(i, 1)[0];
+				break;
+			}
+		}
+		if (class_ == null) return this;
+		
+		
+		var css_:Object = {};
+		
+		for (var j:Number = 0; j < this._classes.length; j++) 
+		{
+			Helper.extendOnly(css_, this._classes[j].css, class_.css);
+		}		
+		Helper.extendOnly(css_, this._css, class_.css);
+		
+		
+		CSSEngine.calculateCss(this, css_);			
+		CSSEngine.render(this, css_);					
+		return this;
+	}
+	
+	/*private var _hover:Object;
+	public function set hover(value:Object) {
+		this._hover = value;
+		
+		this.hover(
+	}*/
 }

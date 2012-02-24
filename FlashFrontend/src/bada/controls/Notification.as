@@ -46,7 +46,7 @@ class bada.controls.Notification{
         }
         hideTimeout = setTimeout(hide,3000);
         $panel.animate({
-            _y:0,
+            y:0,
             time:.3,
             transition:'linear'
         });
@@ -55,7 +55,7 @@ class bada.controls.Notification{
     public static function hide(){
         bada.controls.Notification.hideTimeout = null;
         bada.controls.Notification.$panel.animate({
-            _y:-70,
+            y:-70,
             time:.5
         });
     }

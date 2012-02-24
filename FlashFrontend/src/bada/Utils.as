@@ -1,5 +1,10 @@
-﻿import flash.display.BitmapData;
+﻿import bada.dom.css.BackgroundHelper;
+import bada.dom.events.EventManager;
+import bada.Events;
+import bada.Graphics;
+import flash.display.BitmapData;
 import flash.geom.ColorTransform;
+import flash.geom.Rectangle;
 import flash.geom.Transform;
 import org.flashdevelop.utils.FlashConnect;
 import org.flashdevelop.utils.FlashViewer;
@@ -68,7 +73,7 @@ class bada.Utils {
 		
 		var movie = target.attachMovie(newurl, id, depth);
 		if (movie == null) {
-			Bada.log('ATTACH FAIL', newurl, 'target', target);		
+			Bada.log('ATTACH FAIL', newurl, 'target:', target);		
 		}
 		
 		if (Bada.smallscreen) {
@@ -80,8 +85,8 @@ class bada.Utils {
 
 	
 
-	public static
-	function extend() {
+	public static function extend() {
+		/** obsolete */
 		Function.bind = function() {
 			if (arguments.length < 2 && typeof arguments[0] == "undefined") return this;
 			var args = arguments,
@@ -103,6 +108,39 @@ class bada.Utils {
 				return __method.apply(object, args.concat(arguments));
 			}
 		}
+		
+		if (Bada.multitouchEnabled) {
+			Events.bind("multitouch", function(event, x, y) {
+				x = parseInt(x);
+				y = parseInt(y);
+				//handle hover
+				for (var i:Number = 0; i < EventManager._hovers.length; i++) 
+				{
+					var movie = EventManager._hovers[i].movie;
+					if (event == 'touchStart'){
+						if (movie.hitTest(x, y, true)) {
+							movie.onPress();
+						}
+					}
+					else if (event == 'touchEnd' && movie.onMouseUp != null) {
+						movie.onMouseUp();
+					}
+				}
+				
+				EventManager.evaluate(event, x, y);
+			});
+		}
+		
+		
+		if (Bada.smallscreen) {
+			/** workaround */
+			Graphics.drawBorderImage = function(movie:MovieClip, w:Number, h:Number, resource:String, border:Number,  cropped:Rectangle) {
+				BackgroundHelper.fillBackground(movie, 0x000000, w, h, 12, 60);
+				return null;
+			}
+		}
+		
+		
 	}
 
 

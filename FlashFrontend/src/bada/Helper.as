@@ -18,6 +18,14 @@ class bada.Helper {
 		}
 		return target;
 	}
+	
+	public static function extendOnly(target:Object, source:Object, onlyKeys:Object):Object {
+		for (var key in onlyKeys) {
+			if (source[key] == null) continue;
+			target[key] = source[key];
+		}
+		return target;
+	}
 
 	public static function colorToHex(r: Number, g: Number, b: Number) : Number {
 		return (r << 16 | g << 8 | b);

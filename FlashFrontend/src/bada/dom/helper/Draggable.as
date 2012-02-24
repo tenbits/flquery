@@ -27,8 +27,9 @@ class bada.dom.helper.Draggable
 		if (touchContext != null){
 			touchContext.data('contextFor', div);
 			div = touchContext;
+			div.movie.hitArea = touchContext.movie;
 		}
-		div.movie.hitArea = touchContext.movie;
+		
 		div.bind('touchStart', moveStart);
 		div.bind('move', move);
 		Dom.body.bind('moveEnd', moveEnd);
@@ -48,6 +49,7 @@ class bada.dom.helper.Draggable
 		
 		_lastX = x;
 		_lastY = y;
+		
 		
 	}
 	

@@ -175,12 +175,13 @@ class bada.dom.events.EventManager
 		
 		for (var i = 0; i < _events.length; i++) {
 			if (_events[i].event != event) continue;			
-			if (_events[i].node._movie._visible && _events[i].node._movie.hitTest(x,y, true)){
-				if (EventManager.isOver(top, _events[i])) {
+			if (_events[i].node._movie._visible && _events[i].node._movie.hitTest(x, y, true)) {
+				
+				if (EventManager.isOver(top, _events[i])) {					
 					top = _events[i];
 				}
 			}
-		}
+		}		
 		return top;
 	}
 	
@@ -255,7 +256,10 @@ class bada.dom.events.EventManager
 		for (var i:Number = 0; i < _events.length; i++) 
 		{
 			if (_events[i].node == node && _events[i].event == 'move') {
-				Bada.log('onmousemove', _events[i].handler);
+				if (_events[i].node.enabled == false) {
+					return true;
+				}
+				
 				Dom.body.movie.onMouseMove = _events[i].handler;//_events[i].handler;
 				//node.movie.onMouseMove = _events[i].handler;
 				Dom.body.dragging = true;

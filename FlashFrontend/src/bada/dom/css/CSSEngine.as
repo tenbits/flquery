@@ -16,11 +16,11 @@ class bada.dom.css.CSSEngine
 {
 	
 	static function render(node:INode, css:Object, nobackgroundHandling:Boolean) {
-		if (css == null) css = node._css;
+		if (css == null) css = node._mergedCss;
 		
 		if (nobackgroundHandling != true && css.backgroundImage != null) {
 			/** apply backgroundImage first, for correct width/height calculation */
-			CSSEngine.backgroundImage(node);			
+			CSSEngine.backgroundImage(node, css);			
 		}
 		
 		var width:Number = node.width,
@@ -77,10 +77,12 @@ class bada.dom.css.CSSEngine
 		if (node.style.position == 'absolute') return;
 		
 		if (last == null) last = node.prev('style[position=static]');
-		//Bada.log('prev', last);
+		
+		
+		
 		if (last == null) {
-			if (node._css.x == null) node.x = node.parent.style.paddingLeft  + node.style.marginLeft;
-			if (node._css.y == null) node.y = node.parent.style.paddingTop  + node.style.marginTop;
+			if (node._mergedCss.x == null) node.x = node.parent.style.paddingLeft  + node.style.marginLeft;
+			if (node._mergedCss.y == null) node.y = node.parent.style.paddingTop  + node.style.marginTop;
 			return;
 		}
 		
@@ -115,77 +117,43 @@ class bada.dom.css.CSSEngine
 		}
 		
 		
-		if (node._css.x == null) {
+		if (node._mergedCss.x == null) {
 			node.x = node.parent.style.paddingLeft + node.style.marginLeft;
 		}
-		if (node._css.y == null) {
+		if (node._mergedCss.y == null) {
 			node.y = last.y + last.height + last.style.marginBottom + node.style.marginTop;					
 		}
 	}
 	
-	public static function backgroundImage(node: INode) :Void {	
+	public static function backgroundImage(node: INode, css:Object) :Void {	
 		
 		var movie = node.movie,
-		img:MovieClip = Utils.attachMovie(movie, node._css.backgroundImage, 'backgroundImage' , 1);
+		img:MovieClip = Utils.attachMovie(movie, css.backgroundImage, 'backgroundImage' , 1);
 		
-		//Bada.log('BG:', node._css.backgroundImage, node.style.backgroundImage);
 		if (img == null)  return null;
 		
-		if (node._css.backgroundPosition != null) {            
-			img._x = node._css.backgroundPosition.x;
-			img._y = node._css.backgroundPosition.y;
+		if (css.backgroundPosition != null) {            
+			img._x = css.backgroundPosition.x;
+			img._y = css.backgroundPosition.y;
 		}
 		
-		if (node._css.backgroundRepeat === 'repeat') {			
-			Bada.log(node._tagName, node.width, node.height);
+		if (css.backgroundRepeat === 'repeat') {			
 			node._canvas = Graphics.repeatCanvas(movie, img, node.width, node.height);
 		}
 		
-		if (node._css.backgroundSize === 'stretch') {
+		if (css.backgroundSize === 'stretch') {
 			img._width = node.width;
 			img._height = node.height;	
 		}
 		
-		if (node._css.width == null) node._css.width = img._width;
-		if (node._css.height == null) node._css.height = img._height;
+		if (css.width == null) css.width = img._width;
+		if (css.height == null) css.height = img._height;
 	}
 	
 	
-	static function parseClass(node:INode):Object {
-		
-		var class_ = StyleSheets.getCss(node);
-		//Bada.log('Css.parseClass',class_.position, class_.backgroundColor, class_.height);
-		node._css = Helper.extend(class_,node._css);
-		break;
-		
-		var classes:Array = null, css:Object = node._css;
-		
-		if (typeof node._class === 'string') {
-			classes = node._class.split(' ');
-		}
-		
-		if (typeof node._name === 'string') {
-			if (classes == null) classes = [];
-			classes.unshift(node._name);
-		}
-		if (typeof node._id === 'string') {
-			if (classes == null) classes = [];
-			classes.unshift(node._id);
-		}
-		
-		
-		if (classes != null){
-			for (var i:Number = 0; i < classes.length; i++) 
-			{
-				css = Helper.extendDefaults(css, StyleSheets.Classes[classes[i]]);
-			}
-		}
-		
-		if (StyleSheets.Classes[node._tagName] != null) {
-			css = Helper.extendDefaults(css, StyleSheets.Classes[node._tagName]);			
-		}
-		
-		return css;
+	/** obsolete */
+	static function parseClass(node:INode):Object {		
+		return StyleSheets.getCss(node);		
 	}
 	
 	static function calculateCss(node:INode, css:Object) {
@@ -195,9 +163,16 @@ class bada.dom.css.CSSEngine
 				var percent = parseInt(css.width.substring(0, css.width.length - 1), 10);
 				var parents = node.parent.width;
 				if (typeof parents !== 'number') continue;			
-				node.width = parents * percent / 100;			
+				node.style.width = parents * percent / 100;			
 			}else {
-				node.width = css.width;
+				node.style.width = css.width;
+			}
+			
+			if (node.style.backgroundColor != null && css.backgroundColor == null) {
+				css.backgroundColor = node.style.backgroundColor;
+			}
+			if (node.style.backgroundGradient != null && css.backgroundGradient == null) {
+				css.backgroundGradient = node.style.backgroundGradient;
 			}
 		}
 		
@@ -206,11 +181,12 @@ class bada.dom.css.CSSEngine
 				var percent = parseInt(css.height.substring(0, css.height.length - 1), 10);
 				var parents = node.parent.height;
 				if (typeof parents !== 'number') continue;
-				node.height = parents * percent / 100;
+				node.style.height = parents * percent / 100;
 			}else {
-				node.height = css.height;
+				node.style.height = css.height;
 			}
 		}
+		
 		for (var key in css) {			
 			switch(key) {
 				case 'width':
@@ -230,7 +206,7 @@ class bada.dom.css.CSSEngine
 					break;	
 				default:					
 					if (StyleSheet.styles.hasOwnProperty(key)) {		
-						node.style[key] = css[key];							
+						node.style[key] = css[key];								
 					}else {
 						if (typeof node.movie['_' + key] === 'undefined')
 							Bada.log('Error # no property in styles', key, css[key]);
@@ -240,8 +216,9 @@ class bada.dom.css.CSSEngine
 		}
 		
 		if (node.style.position == 'static') {
-			CSSEngine.reposition(node);
+			CSSEngine.reposition(node, null, css);
 		}
+		
 	}
 	
 }

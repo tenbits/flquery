@@ -131,8 +131,9 @@ class bada.dom.css.StyleSheet
 		this.borderRadiusTopRight = 0;
 		
 		this.backgroundOpacity = 100;
-		this.parseCss(css);
-		this.inheritCss(this._node.style, css);		
+		
+		//this.parseCss(css);
+		//this.inheritCss(this._node.style, css);		
 	}
 	
 	
@@ -173,20 +174,20 @@ class bada.dom.css.StyleSheet
 		}
 	}
 	
-	public function inheritCss(parents:StyleSheet) {
+	public function inheritCss(parents:StyleSheet, currentCss:Object) {
 		if (this._width == null && this.display != 'inline-block') {
 			if (parents.width != null){
 				this.width = parents.width - parents.paddingLeft - parents.paddingRight - this.marginRight - this.marginLeft;				
 			}
+		}		
+		if (currentCss.color == null && parents.color != null) {
+			this.color = (currentCss.color = parents.color);
 		}
-		if (this.color == null) {
-			this.color = parents.color;
+		if (currentCss.fontSize == null && parents.fontSize != null) {
+			this.fontSize = (currentCss.fontSize = parents.fontSize);			
 		}
-		if (this.fontSize == null) {
-			this.fontSize = parents.fontSize;
-		}
-		if (this.fontFamily == null) {
-			this.fontFamily = parents.fontFamily;
+		if (currentCss.fontFamily == null && parents.fontFamily != null) {
+			this.fontFamily = (currentCss.fontFamily = parents.fontFamily);
 		}
 	}
 	
@@ -199,8 +200,7 @@ class bada.dom.css.StyleSheet
 	}
 	public function set x(value):Void {
 		if (typeof value === 'string')  {
-			if (value.charAt(value.length - 1) == '%') {
-				//Bada.log('set x', value,this._node.parent.width, this._node.width);
+			if (value.charAt(value.length - 1) == '%') {				
 				this._x = (this._node.parent.width - this._node.width) / 2
 			}
 			else this._x = parseInt(value);
@@ -324,7 +324,8 @@ class bada.dom.css.StyleSheet
 	}
 	public function set backgroundGradient(value):Void 
 	{
-		if (value instanceof Gradient) this._backgroundGradient = Gradient(value);
+		if (value == null) this._backgroundGradient = null;
+		else if (value instanceof Gradient) this._backgroundGradient = Gradient(value);
 		else this._backgroundGradient = new Gradient(value);
 	}
 	public function get borderImage():BorderImage 
@@ -334,7 +335,9 @@ class bada.dom.css.StyleSheet
 	public function set borderImage(value):Void 
 	{
 		if (value instanceof BorderImage) this._borderImage = BorderImage(value);
-		else _borderImage = new BorderImage(value);
+		else {
+			_borderImage = new BorderImage(value);
+		}
 	}
 	
 	public function set borderRadius(value):Void {

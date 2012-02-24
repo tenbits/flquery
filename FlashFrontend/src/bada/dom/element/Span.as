@@ -2,6 +2,7 @@
 import bada.dom.css.CSSEngine;
 import bada.dom.element.INode;
 import bada.dom.element.Div;
+import bada.dom.StyleSheets;
 import bada.Helper;
 
 class bada.dom.element.Span extends INode{
@@ -30,6 +31,23 @@ class bada.dom.element.Span extends INode{
 			this._html = data._html;
 			this._css = data._css;
 			this._text = data._text;
+			
+			if (data._class != null) {
+				if (typeof data._class === 'string') {
+					data._class = data._class.split(' ');
+				}
+				
+				if (data._class instanceof Array) {
+					this._classNames = { };
+					for (var i:Number = 0; i < data._class.length; i++) 
+					{
+						if (data._class[i]) {
+							this._classNames[data._class[i]] = 1;
+						}					}					
+				}else {
+					data._classNames = data._class;
+				}
+			}
 			
 			this.render();
 		}
@@ -105,10 +123,11 @@ class bada.dom.element.Span extends INode{
 			depth++;
 		}
 		
-		CSSEngine.parseClass(this);	
-		this.style.inheritCss(this.parent.style, this._css);
+		var class_:Object = StyleSheets.getCss(this),
+		css = class_ == null ? this._css : Helper.extend(class_, this._css);
+		this.style.inheritCss(this.parent.style, css);	
 		
-		CSSEngine.calculateCss(this, this._css);
+		CSSEngine.calculateCss(this, css);
 		
 		
 		parentMovie.createTextField('text' + depth, depth, this.style.x, this.style.y, this.style.width || 200, this.style.height || 40);
@@ -116,6 +135,7 @@ class bada.dom.element.Span extends INode{
 		this._textField.multiline = true;
 		this._textField.wordWrap = true;
 		this._textField.autoSize = true;
+		this._textField.selectable = false;
 		
 		
 		if (this._html) {
@@ -125,7 +145,9 @@ class bada.dom.element.Span extends INode{
 		}else {
 			this._textField.text = this._text || '';			
 		}        
-		CSSEngine.render(this, this._css);
+		
+		CSSEngine.render(this, css);
+		
 		
 		if (this.style.verticalAlign == 'middle') {
 			var height = this._textField.textHeight;
@@ -158,7 +180,10 @@ class bada.dom.element.Span extends INode{
 			CSSEngine.render(this._shadowSpan);
 		}
 		
-        return this;
+		if (this._parent._children == null) this._parent._children = [];
+		this._parent._children.push(this);
+		
+		return this;
     }
     
 	public function toggle():INode{
@@ -177,9 +202,8 @@ class bada.dom.element.Span extends INode{
 	
 	public function applyCss(key:String):Void {
 		var value = this.style[key];
-		
 		if (value == null) {
-			Bada.log('Error # Span.applyCss: undefined value', key, this._css[key]);
+			Bada.log('Error # Span.applyCss: undefined value', key, this._css[key], this.parent._name);
 			return;
 		}
 		

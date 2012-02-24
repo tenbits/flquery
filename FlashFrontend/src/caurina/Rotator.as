@@ -1,3 +1,5 @@
+import bada.dom.element.Div;
+import bada.dom.element.INode;
 import flash.geom.Point;
 
 class caurina.Rotator {
@@ -81,23 +83,43 @@ class caurina.Rotator {
 		var dx:Number = x - target._x;
 		var dy:Number = y - target._y;
 		
-	   
-		
 		var dist:Number = Math.sqrt(dx * dx + dy * dy);
-
 		
 		var a = Math.atan2(dy, dx) * 180 / Math.PI;
 		
 		
-		var offset = 180 - a + target._rotation;
-		
+		var offset = 180 - a + target._rotation;		
 		var ra: Number = (angle - offset) * Math.PI / 180;
-
 		target._x = x + Math.cos(ra) * dist;
 		target._y = y + Math.sin(ra) * dist;
-		
-		
 		target._rotation = angle;
+	}
+	
+	
+	public static function rotateNode(target:INode,angle:Number, x:Number, y:Number, width:Number, height:Number){
+		
+		if (x == null) x = (width || target.width) / 2;
+		if (y == null) y = (height || target.height) / 2;
+		
+		
+		if (x == 0 && y == 0) {
+			target.movie._rotation = angle;
+			return;
+		}
+		x += target.x;
+		y += target.y;
+		
+		var dx:Number = x - target.x;
+		var dy:Number = y - target.y;
+		
+		var dist:Number = Math.sqrt(dx * dx + dy * dy);
+		
+		var a = Math.atan2(dy, dx) * 180 / Math.PI;		
+		var offset = 180 - a;
+		var ra: Number = (angle - offset) * Math.PI / 180;
+		target.movie._x = x + Math.cos(ra) * dist;
+		target.movie._y = y + Math.sin(ra) * dist;
+		target.movie._rotation = angle;
 	}
 
     public

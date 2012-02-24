@@ -34,7 +34,7 @@ class bada.dom.widgets.ToggleSlide extends Div
 	private function toggle() {
 		this._status = !this._status;
 		this._slider.animate( {
-			_x: this._status ? 5 : this._width - this._sliderWidth - 5,
+			x: this._status ? 5 : this._width - this._sliderWidth - 5,
 			time: 1,
 			transition:'easeinout'
 		});

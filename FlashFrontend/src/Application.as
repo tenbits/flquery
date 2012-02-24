@@ -1,5 +1,6 @@
 import bada.dom.Dom;
 import bada.dom.element.Div;
+import bada.dom.element.INode;
 import bada.dom.LocalStorage;
 import bada.dom.StyleSheets;
 import bada.dom.widgets.View;
@@ -31,19 +32,44 @@ class Application
 				fontSize:40,
 				position:'static',
 				textAlign:'center'
+			},
+			'button', {
+				width: 150,
+				height: 64,
+				color:0xffffff,
+				fontSize: 20,
+				x: '50%',
+				position:'static',
+				backgroundGradient: {
+					colors: [0x555555, 0x303030],
+					radius: Math.PI / 2
+				},
+				borderRadius: 12,
+				border: [1, 0]
+			},
+			'button.active', {
+				backgroundGradient: {
+					colors: [0x111111, 0x444444],
+					radius: Math.PI / 2
+				}
 			});
 		
-			
 		Dom.body.append("
 			<menuView id='viewMenu' background='carbon.png repeat'>
 				<div id='subGradient' background='gradient(0xff0000,0x00ff00,0x0000ff)'/>
 				<div> 
 					<span><b>Hello</b> <i>world!</i></span>
 					</div>
-				<div style='height:100;'/>				
+				<div style='height:100;'/>	
+				<button id='btnSample'>Sample</button>
 			</menuView>
 			");
 		
+		Dom.body.find('#btnSample').hover(function(button:INode) {
+			button.addClass('active');
+		}, function(button:INode) {
+			button.removeClass('active');
+		});
 		
 		
 		DebugView.setup();		

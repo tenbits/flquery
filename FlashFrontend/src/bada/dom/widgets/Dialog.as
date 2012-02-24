@@ -11,7 +11,7 @@ class bada.dom.widgets.Dialog
 	private static var _dialogs:Object;
 	
 	
-	public static function register(id:String, data:Object):INode {
+	public static function register(id:String, data:Object):Div {
 		if ($overlay == null) {
 			$overlay = new Div(Dom.body, {
 				_id:'dialogOverlay',
@@ -39,16 +39,16 @@ class bada.dom.widgets.Dialog
 		
 		$overlay.append(data);
 		
-		return (_dialogs[id] = $overlay.first(id));
+		return (_dialogs[id] = $overlay.find('#' + id));
 	}
 	
 	public static function show(id:String) {
 		
 		$overlay.ztop().css('alpha', 30).toggle(true).animate( {
-			_alpha:100,
+			alpha:100,
 			time:.1,
 			onComplete:function() {
-				Dialog._dialogs[id].toggle(true);
+				Dialog._dialogs[id].toggle(true);				
 			}
 		});
 		

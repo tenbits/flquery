@@ -7,10 +7,15 @@ class bada.dom.css.CssClass
 {
 	public var css:Object;
 	public var selector:Array;
+	public var className:String;
 	public function CssClass(_selector:String ,css:Object) 
 	{
 		this.selector = CssClass.parseSelector(_selector);
 		this.css = css;
+		
+		var name = this.selector[this.selector.length - 1].className;
+		if (name)  this.className = name;
+		
 	}
 	
 	public function toString() {
@@ -114,7 +119,24 @@ class bada.dom.css.CssClass
 	
 	public function match(node:INode):Boolean {
 		var current:INode = node;
-		for (var i:Number = this.selector.length; i > -1; i--) 
+		for (var i:Number = this.selector.length - 1; i > -1; i--) 
+		{
+			var item = this.selector[i];			
+			if (item === '>') {
+				current = current.parent;
+				if (!CssClass.doMatch(this.selector[--i], current)) return false;
+				continue;
+			}
+			
+			if (!CssClass.doMatch(item, current)) return false;
+		}
+	
+		return true;
+	}
+	
+	public function applyable(node:INode):Boolean {		
+		var current:INode = node;
+		for (var i:Number = this.selector.length - 2; i > -1; i--) 
 		{
 			var item = this.selector[i];
 			if (item === '>') {
@@ -134,44 +156,17 @@ class bada.dom.css.CssClass
 		if (selectors.id != null && node._id != selectors.id) return false;
 		if (selectors.tag != null && node._tagName != selectors.tag) return false;
 		if (selectors.className != null) {
-			if (node._className == null) return false;
+			if (node._classNames == null) return false;
 			if (selectors.className instanceof Array){
 				for (var i:Number = 0; i < selectors.className.legth; i++) 
 				{
 					if (node.hasClass(String(selectors.className[i])) == false) return false;
 				}
 			}
-			else if (typeof selectors.className === 'string'){
+			else if (typeof selectors.className === 'string') {
 				if (node.hasClass(String(selectors.className)) == false) return false;
 			}
 		}
-		return true;
-		
-		/*for (var key in selectors) {			
-			switch(key) {
-				case 'name':
-					if (node._name != selectors.name) return false;
-					break;
-				case 'id':
-					if (node._id != selectors.id) return false;
-					break;
-				case 'tag':
-					if (node._tagName != selectors.tag) return false;
-					break;
-				case 'className':
-					if (node._className == null) return false;
-					if (selectors.className instanceof Array){
-						for (var i:Number = 0; i < selectors.className.legth; i++) 
-						{
-							if (node.hasClass(String(selectors.className[i])) == false) return false;
-						}
-					}
-					else if (typeof selectors.className === 'string'){
-						if (node.hasClass(String(selectors.className)) == false) return false;
-					}
-					break;
-			}
-		}		
-		return true;*/
+		return true;		
 	}
 }
