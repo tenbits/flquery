@@ -3,7 +3,8 @@ body, html {
 	font-family: sans-serif;
 }
 .caption {
-	position:absolute;
+	position:fixed;
+	background:#ffffff
 }
 .page, footer{
 	width: 60%; min-width: 500px; margin: 0 auto;
