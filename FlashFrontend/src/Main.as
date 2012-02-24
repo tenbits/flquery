@@ -5,10 +5,8 @@ import bada.dom.NodesFactory;
 import bada.Events;
 import bada.Proxy;
 import bada.Utils;
-import bada.views.BookmarksView;
-import bada.views.InfoView;
-import bada.views.MainView;
-import bada.views.MenuView;
+import views.MainView;
+import views.MenuView;
 import org.flashdevelop.utils.FlashConnect;
 /**
  * ...
@@ -27,31 +25,12 @@ class Main
 		///** register custom widgets */
 		NodesFactory.controls['mainView'] = MainView;
 		NodesFactory.controls['menuView'] = MenuView;
-		NodesFactory.controls['infoView'] = InfoView;
+		//NodesFactory.controls['infoView'] = InfoView;
 		
 		var start = getTimer();
-		bada.Game.startApp();
-		Bada.log('AppStart', getTimer() - start);
+		Application.startApp();
 		
-		Events.bind("multitouch", function(event, x, y) {
-			x = parseInt(x);
-			y = parseInt(y);
-			//handle hover
-			for (var i:Number = 0; i < EventManager._hovers.length; i++) 
-			{
-				var movie = EventManager._hovers[i].movie;
-				if (event == 'touchStart'){
-					if (movie.hitTest(x, y, true)) {
-						movie.onPress();
-					}
-				}
-				else if (event == 'touchEnd' && movie.onMouseUp != null) {
-					movie.onMouseUp();
-				}
-			}
-			
-			EventManager.evaluate(event, x, y);
-		});
+		Bada.log('AppStart', getTimer() - start);		
 		
 	}
 	
