@@ -57,7 +57,7 @@ class bada.views.DebugView extends bada.dom.widgets.View {
 			},
 			handler: {
 				touchEnd: function() {
-					bada.dom.widgets.View.open('viewMain');
+					bada.dom.widgets.View.open('mainView');
 				}
 			}
 		},

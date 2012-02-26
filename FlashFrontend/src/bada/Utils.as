@@ -161,8 +161,9 @@ class bada.Utils {
 		if (id == null) id = 'simplemovie' + parent.getNextHighestDepth();
 		parent.createEmptyMovieClip(id, parent.getNextHighestDepth());
 		var movie = parent[id];
-		movie._xscale = 100;
-		movie._yscale = 100;
+		/*movie._xscale = 100;
+		movie._yscale = 100;*/
+		
 		return movie;
 	}
 

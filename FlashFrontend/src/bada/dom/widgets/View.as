@@ -84,25 +84,6 @@ class bada.dom.widgets.View extends bada.dom.element.Div {
 	
 	private static function transition($hide:View, $show:View){
 		if (transitions == null) createPanels();
-		/*
-		var $transition = _root['transition'];
-		if ($transition == null){
-			$transition = bada.Utils.createMovieClip(_root,'transition',{
-				width:Bada.screen.width,
-				height:Bada.screen.height
-			});
-		
-			bada.Utils.createMovieClip($transition,'hide',{
-				width:Bada.screen.width,
-				height:Bada.screen.height
-			});
-			bada.Utils.createMovieClip($transition,'show',{
-				width:Bada.screen.width,
-				height:Bada.screen.height
-			});
-			
-			
-		}*/
 		
 		View.cloneCanvas(transitions.hide, $hide.movie);
 		View.cloneCanvas(transitions.show, $show.movie);
@@ -112,28 +93,34 @@ class bada.dom.widgets.View extends bada.dom.element.Div {
 		
 		transitions.show.ztop().toggle(true).css( {
 			xscale:0,
-			x: Bada.screen.width / 2
+			yscale: 95,
+			x: Bada.screen.width / 2,			
+			y: Bada.screen.height * .025
 		});		
 		transitions.hide.ztop().toggle(true).css( {
 			xscale: 100,
-			x: 0
+			yscale: 100,
+			x: 0,
+			y: 0
 		});
-		
 		
 		
 	   
 		
 		Tweener.addTween(transitions.hide.movie,{
 			_xscale:0,
+			_yscale: 95,
 			_x:Bada.screen.width / 2,
+			_y: Bada.screen.height * .025,
 			transition:'linear',
 			time:.2
 			
 		});
 		Tweener.addTween(transitions.show.movie,{
 			_xscale:100,
+			_yscale: 100,
 			_x:0,
-			
+			_y:0,
 			time:.2,
 			delay:.2,
 			transition:'linear',

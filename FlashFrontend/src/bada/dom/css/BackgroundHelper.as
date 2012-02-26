@@ -1,7 +1,10 @@
 import bada.dom.CSS;
 import bada.dom.css.Border;
 import bada.dom.css.Gradient;
+import bada.dom.css.Shadow;
 import bada.dom.element.Div;
+import bada.Graphics;
+import flash.geom.Rectangle;
 /**
  * ...
  * @author tenbits
@@ -25,7 +28,7 @@ class bada.dom.css.BackgroundHelper
 		movie:MovieClip = div.movie;
 		
 		//Bada.log(width, 'x', height, typeof div.style.backgroundOpacity);
-		movie.clear();
+		//movie.clear();
 		
 		if (backgroundColor != null && gradient == null) {
 			movie.beginFill(backgroundColor, div.style.backgroundOpacity);
@@ -193,4 +196,27 @@ class bada.dom.css.BackgroundHelper
 		movie.endFill();
 	}
 	
+	
+	static function drawShadow(div:Div, shadow:Shadow) {
+		var size:Number = shadow.size,
+		blur:Number = shadow.blur,
+		dx = shadow.dx,
+		dy = shadow.dy,
+		movie = div.movie,
+		drawer = div.style.borderRadius > 0 ? Graphics.outlineRoundedRectangle : Graphics.outlineRectangle,
+		color = shadow.color,
+		width = div.width,
+		step = 1;
+		
+		for (var i:Number = 0; i < size; i+= step) 
+		{
+			movie.beginFill(color, 100 - (size * blur) - i * blur);	
+			drawer(movie, new Rectangle(0 - i + dx, 0 - i + dy, width + i * 2, width + i * 2), div.style.borderRadius);
+			if (i != 0) 
+			{
+				drawer(movie, new Rectangle(0 - i + step + dx, 0 - i + step + dy, width + i * 2 - 2 * step, width + i * 2 - 2 * step), div.style.borderRadius);
+			}				
+			movie.endFill();
+		}
+	}
 }

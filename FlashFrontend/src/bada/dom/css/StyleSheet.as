@@ -3,6 +3,7 @@ import bada.dom.CSS;
 import bada.dom.css.Border;
 import bada.dom.css.BorderImage;
 import bada.dom.css.Gradient;
+import bada.dom.css.Shadow;
 import bada.dom.element.INode;
 import flash.geom.Point;
 /**
@@ -24,7 +25,7 @@ class bada.dom.css.StyleSheet
 		marginRight: null,
 		marginBottom: null,
 		marginLeft: null,
-		padding: null, // [10,10,10,10] || '10,10,10,10'
+		padding: null, // [10,10,10,10] || '10,10,10,10' || 10
 		paddingTop: null,	
 		paddingRight: null,
 		paddingBottom: null,
@@ -44,6 +45,7 @@ class bada.dom.css.StyleSheet
 		backgroundOpacity: null,
 		opacity: null,
 		backgroundGradient: null,
+		boxShadow:null, // (1) 'dx dy blur size color'
 		rotation: null,
 		rotationPivot: null,
 		scale: null,
@@ -53,6 +55,7 @@ class bada.dom.css.StyleSheet
 		color: null,
 		fontSize: null,
 		fontFamily: null,
+		textShadow: null, // todo
 		verticalAlign: 1,
 		textAlign: null,
 		wordWrap:null,
@@ -115,7 +118,8 @@ class bada.dom.css.StyleSheet
 	public var verticalAlign:String;
 	public var textAlign:String; // horizontalAlign;
 	
-	
+	private var _textShadow:Shadow;
+	private var _boxShadow:Shadow;
 	
 	public function StyleSheet(node:INode, css:Object) 
 	{
@@ -354,6 +358,37 @@ class bada.dom.css.StyleSheet
 			this.borderRadiusBottomRight = value[3] || 0;
 		}else if (typeof value === 'string') {
 			this.borderRadius = parseInt(value);
+		}
+	}
+	
+	public function get borderRadius():Number {
+		return this.borderRadiusTopLeft || 0;
+	}
+	
+	public function get textShadow():Shadow 
+	{
+		return this._textShadow;
+	}
+	public function set textShadow(value):Void 
+	{
+		if (value instanceof Shadow === false) {
+			this._textShadow = new Shadow(value);
+		}
+		else {
+			this._textShadow = value;
+		}
+	}
+	public function get boxShadow():Shadow 
+	{
+		return _boxShadow;
+	}
+	public function set boxShadow(value:Shadow):Void 
+	{
+		if (value instanceof Shadow === false) {
+			this._boxShadow = new Shadow(value);
+		}
+		else {
+			this._boxShadow = value;
 		}
 	}
 	

@@ -157,8 +157,6 @@ class bada.dom.element.Div extends INode{
 		
 		this.style.inheritCss(this.parent.style, this._mergedCss);
 		
-		
-		
 		CSSEngine.render(this, this._mergedCss, true);
 		
 		if (this._children) {
@@ -180,10 +178,10 @@ class bada.dom.element.Div extends INode{
 		return this;
     }
 	
-	public function invalidate() {
+	/*public function invalidate() {
 		CSSEngine.calculateCss(this, this._css);
 		CSSEngine.render(this, this._css);       
-	}
+	}*/
     
 	public static function create(movie:MovieClip, data:Object):Div{
 		return new Div(movie, data);

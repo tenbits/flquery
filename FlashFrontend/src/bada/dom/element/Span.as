@@ -1,5 +1,6 @@
 ﻿import bada.dom.CSS;
 import bada.dom.css.CSSEngine;
+import bada.dom.css.Shadow;
 import bada.dom.element.INode;
 import bada.dom.element.Div;
 import bada.dom.StyleSheets;
@@ -109,19 +110,13 @@ class bada.dom.element.Span extends INode{
 	}
     
     
-    public function render() : INode {
-        
+	public function render() : INode {        
 		var p = this._parent;
 		var parentMovie:MovieClip = this.parent.style.overflow == 'scroll' ? p.scroller.scroller._movie : p._movie;
 		
 		var depth = parentMovie.getNextHighestDepth();
 		
 		
-		if (this._css.textShadow) {            
-			this._shadowSpan = (new Span(this._text)).appendTo(this._parent);  
-			this._parent._children.splice(this._parent._children.length - 1,1);
-			depth++;
-		}
 		
 		var class_:Object = StyleSheets.getCss(this),
 		css = class_ == null ? this._css : Helper.extend(class_, this._css);
@@ -129,6 +124,12 @@ class bada.dom.element.Span extends INode{
 		
 		CSSEngine.calculateCss(this, css);
 		
+		if (this.style.textShadow) {            
+			/*this._shadowSpan = (new Span(this._text)).appendTo(this._parent);  
+			this._parent._children.splice(this._parent._children.length - 1,1);
+			depth++;*/
+			Shadow.renderTextShadow(this, this._html);
+		}
 		
 		parentMovie.createTextField('text' + depth, depth, this.style.x, this.style.y, this.style.width || 200, this.style.height || 40);
 		this._textField = parentMovie['text' + depth];
@@ -136,7 +137,6 @@ class bada.dom.element.Span extends INode{
 		this._textField.wordWrap = true;
 		this._textField.autoSize = true;
 		this._textField.selectable = false;
-		
 		
 		if (this._html) {
 			this._textField.multiline = true;
@@ -180,11 +180,12 @@ class bada.dom.element.Span extends INode{
 			CSSEngine.render(this._shadowSpan);
 		}
 		
+		
 		if (this._parent._children == null) this._parent._children = [];
 		this._parent._children.push(this);
 		
 		return this;
-    }
+	}
     
 	public function toggle():INode{
 		var visible = (typeof arguments[0] == 'boolean') ? arguments[0] : !_textField._visible;

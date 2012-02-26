@@ -18,6 +18,8 @@ class bada.dom.css.CSSEngine
 	static function render(node:INode, css:Object, nobackgroundHandling:Boolean) {
 		if (css == null) css = node._mergedCss;
 		
+		
+		
 		if (nobackgroundHandling != true && css.backgroundImage != null) {
 			/** apply backgroundImage first, for correct width/height calculation */
 			CSSEngine.backgroundImage(node, css);			
@@ -26,7 +28,9 @@ class bada.dom.css.CSSEngine
 		var width:Number = node.width,
 		height:Number = node.height,
 		movie:Object = node.movie || node.textField;
-	
+		
+		
+		
 		
 		
 		for (var prop in css) {
@@ -61,8 +65,13 @@ class bada.dom.css.CSSEngine
 			node.applyCss(prop, node.style[prop]);
 		}
 		
-		if (css.backgroundColor != null || css.backgroundGradient != null || css.border != null) {
-			if (node.style.height != null){
+		if (css.backgroundColor != null || css.backgroundGradient != null || css.border != null || css.boxShadow != null) {
+			node.movie.clear();
+			
+			if (css.boxShadow != null) {
+				BackgroundHelper.drawShadow(node.asDiv(), node.style.boxShadow);
+			}			
+			if (node.style.height != null) {				
 				BackgroundHelper.render2(Div(node));
 			}
 		}	

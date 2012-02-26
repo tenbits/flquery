@@ -393,7 +393,7 @@ class bada.dom.element.INode{
 		return this;
 	}
 
-    public function trigger():Boolean {
+	public function trigger():Boolean {
 		var r:Boolean;
 		if ((arguments[1] instanceof Event) == false) {
 			arguments.splice(1, 0, new Event(this));
@@ -411,12 +411,17 @@ class bada.dom.element.INode{
 		return true;
 	}
 
-    public function hover(start:Function, end:Function):INode {
+	public function hover(start:Function, end:Function):INode {
 		EventManager.hover(this, start, end);
 		return this;
 	}
 	
-    
+	public function touchEnd(callback:Function):INode {
+		return this.bind('touchEnd', callback);
+	}
+	public function touchStart(callback:Function):INode {
+		return this.bind('touchStart', callback);
+	}
 
 	/** casting */
 	public function asSpan():bada.dom.element.Span{
@@ -440,9 +445,8 @@ class bada.dom.element.INode{
 		
 		this._movie._xscale = value;
 		this._movie._yscale = value;
-		this._movie._x = width_/2 - width_ * value / 200 + (this.style.x);
-		this._movie._y = height_/2 - height_ * value / 200 + (this.style.y);
-
+		this._movie._x = width_ / 2 - width_ * value / 200 + this.style.x;
+		this._movie._y = height_/2 - height_ * value / 200 + this.style.y;
 	}
 	
 	public function set opacity(value:Number):Void {

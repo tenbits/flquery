@@ -158,13 +158,30 @@ class bada.Graphics
 		return _image;
 	}
 	
-	private static function outlineRectangle(movie:MovieClip, rec: Rectangle) {
+	public static function outlineRectangle(movie:MovieClip, rec: Rectangle) {
 		movie.moveTo(rec.x,rec.y);
 		movie.lineTo(rec.x,rec.y);
-		movie.lineTo(rec.width,rec.y);
-		movie.lineTo(rec.width,rec.height);
-		movie.lineTo(rec.x,rec.height);
+		movie.lineTo(rec.width + rec.x,rec.y);
+		movie.lineTo(rec.width + rec.x,rec.height + rec.y);
+		movie.lineTo(rec.x,rec.height + rec.y);
 		movie.lineTo(rec.x,rec.y);
+	}
+	
+	public static function outlineRoundedRectangle(movie:MovieClip, rec:Rectangle, roundedCorner:Number) {
+		movie.moveTo(rec.x + roundedCorner,rec.y);
+		movie.lineTo(rec.x + roundedCorner,rec.y);
+		movie.lineTo(rec.width + rec.x - roundedCorner , rec.y);
+		
+		movie.curveTo(rec.width + rec.x, rec.y, rec.width + rec.x, rec.y + roundedCorner);
+		
+		movie.lineTo(rec.width + rec.x, rec.height + rec.y - roundedCorner);
+		movie.curveTo(rec.width + rec.x, rec.height + rec.y, rec.width + rec.x - roundedCorner, rec.height + rec.y);
+		
+		movie.lineTo(rec.x + roundedCorner, rec.height + rec.y);
+		movie.curveTo(rec.x, rec.height +rec.y, rec.x, rec.height +rec.y - roundedCorner);
+		
+		movie.lineTo(rec.x, rec.y + roundedCorner);
+		movie.curveTo(rec.x, rec.y, rec.x + roundedCorner, rec.y);
 	}
 	
 	public static function drawBorderImage(movie:MovieClip, w:Number, h:Number, resource:String, border:Number,  cropped:Rectangle):BitmapData {
