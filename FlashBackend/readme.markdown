@@ -4,9 +4,9 @@
 
 RESTFull Flash-C++ bidirectional Communication:
 
-C++: @see https://github.com/tenbits/flquery/blob/master/FlashBackend/inc/FlashCppProxy/IOService.h
-Flash Usage: 
-	@code bada.Proxy.service('ioservice', 'file-delete',{path:'/Media/image.png'});
+C++: @see https://github.com/tenbits/flquery/blob/master/FlashBackend/inc/FlashCppProxy/IOService.h<br/>
+Flash Usage: <br/>
+	@code bada.Proxy.service('ioservice', 'file-delete',{path:'/Media/image.png'});<br/>
 	@code bada.Proxy.service('ioservice', 'directory-list',{path: '/Media/Videos'}, function(fileList:Array){/**callback function */});
 
 Events:
