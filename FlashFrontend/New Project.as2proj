@@ -40,6 +40,7 @@
   <!--some comment-->
   <library>
     <asset path="src\resources\800\carbon.png" bitmap="False" />
+	<asset embedded="1" bitmap="True" path="src\resources\800\img00.png" />
     <asset embedded="1" bitmap="False" path="src\resources\800\carbon.png" />
     <asset embedded="1" bitmap="False" path="src\resources\800\noise.png" />
   </library>

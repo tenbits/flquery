@@ -5,6 +5,8 @@ import bada.dom.element.INode;
 import bada.dom.StyleSheets;
 import bada.dom.widgets.Launcher;
 import bada.dom.widgets.View;
+import bada.Graphics;
+import bada.Utils;
 import bada.views.DebugView;
 /**
  * ...
@@ -85,8 +87,9 @@ class Application
 			button.addClass('active');
 		}, function(button:INode) {
 			button.removeClass('active');
-		}).touchEnd(View.open.bind(View, 'mainView'));
-		
+		}).touchEnd(function() { 
+			View.open('mainView');			
+		});
 		
 		DebugView.setup();		
 		setTimeout(function() {

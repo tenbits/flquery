@@ -7,6 +7,7 @@
     <library>
       <clip id="__sharepoint__" />
       <clip id="src.resources.800.carbon.png" name="src.resources.800.carbon.png" import="src\resources\800\carbon.png" size="1313" modified="24.02.2012 0:57:41" />
+      <bitmap id="src.resources.800.img00.png" name="src.resources.800.img00.png" import="src\resources\800\img00.png" size="1097" modified="27.02.2012 0:04:38" />
       <clip id="src.resources.800.carbon.png" name="src.resources.800.carbon.png" import="src\resources\800\carbon.png" size="1313" modified="24.02.2012 0:57:41" />
       <clip id="src.resources.800.noise.png" name="src.resources.800.noise.png" import="src\resources\800\noise.png" size="25228" modified="26.02.2012 15:22:46" />
     </library>

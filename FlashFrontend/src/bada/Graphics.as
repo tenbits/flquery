@@ -20,11 +20,6 @@ class bada.Graphics
 	 * @param	mask
 	 */
 	public static function alphablend(image:MovieClip, mask:MovieClip, target:MovieClip, removesource:Boolean):MovieClip {
-		
-		/*var clonedepth = image._parent.getNextHighestDepth();
-		image.duplicateMovieClip('clone' + clonedepth, clonedepth);
-		var imageclone:MovieClip = image._parent['clone' + clonedepth];*/
-		
 		var _image:BitmapData = new BitmapData(image._width, image._height, true , 0x000000);
 		var _mask:BitmapData = new BitmapData(mask._width, mask._height, true , 0x000000);
 		
@@ -70,6 +65,27 @@ class bada.Graphics
 		
 		return movie;
 	}
+	
+	/*public static function blur(bitmap:BitmapData):BitmapData {
+		bitmap = Graphics.cropN(bitmap, new Rectangle(10, 10, 300, 100));
+		for (var y = 0; y < height; y++) {
+			for (var x = 0; x < width; x++) {
+				var total = 0;
+				var sum = 0;
+				for (var kx = -radius + 1; kx <= radius; kx++)
+					for (var ky = -radius + 1; ky <= radius; ky++) {
+						sum++;
+						total += bitmap.getPixel(x + kx, y + ky);
+					}
+				blured.setPixel(x,y,total / sum); 
+				
+				
+			}
+		}
+		
+		
+		return blured;
+	}*/
 	
 	/**
 	 * @deprecated use drawCanvas instead and cache BitmapData return for further disposing
