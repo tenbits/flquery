@@ -66,14 +66,7 @@ class bada.dom.css.CSSEngine
 		}
 		
 		if (css.backgroundColor != null || css.backgroundGradient != null || css.border != null || css.boxShadow != null) {
-			node.movie.clear();
-			
-			if (css.boxShadow != null) {
-				BackgroundHelper.drawShadow(node.asDiv(), node.style.boxShadow);
-			}			
-			if (node.style.height != null) {				
-				BackgroundHelper.render2(Div(node));
-			}
+			BackgroundHelper.render2(node.asDiv());			
 		}	
 		
 		/** transformations */
@@ -109,7 +102,7 @@ class bada.dom.css.CSSEngine
 				node.style.marginLeft - 
 				node.width  - 
 				node.parent.style.paddingLeft - 
-				node.parent.style.paddingRight > -1) {
+				node.parent.style.paddingRight > 0) {
 					
 					node.x = last.x + last.width + last.style.marginLeft + node.style.marginLeft;
 					node.y = last.y + node.style.marginTop;
@@ -118,8 +111,8 @@ class bada.dom.css.CSSEngine
 					 * so that, next block that comes on next row has correct y-position
 					 */
 					if (last.height > node.height) {
-						node.height = last.height;
-					}
+						node.height = last.height;						
+					}					
 					return;
 			}
 			
@@ -166,7 +159,6 @@ class bada.dom.css.CSSEngine
 	}
 	
 	static function calculateCss(node:INode, css:Object) {
-		
 		if (css.width != null) {
 			if (typeof css.width === 'string' && css.width.charAt(css.width.length - 1) == '%') {
 				var percent = parseInt(css.width.substring(0, css.width.length - 1), 10);
@@ -185,7 +177,8 @@ class bada.dom.css.CSSEngine
 			}
 		}
 		
-		if (css.height != null){
+		if (css.height != null) {
+			
 			if (typeof css.height === 'string' && css.height.charAt(css.height.length - 1) == '%') {
 				var percent = parseInt(css.height.substring(0, css.height.length - 1), 10);
 				var parents = node.parent.height;

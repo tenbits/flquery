@@ -39,11 +39,10 @@ class Application
 				textAlign:'center'
 			},
 			'button', {
-				width: 150,
-				height: 64,
+				display:'inline-block',
 				color:0xffffff,
-				fontSize: 20,
-				x: '50%',
+				fontSize: 40,
+				x: '50%', 
 				position:'static',
 				backgroundGradient: {
 					colors: [0x555555, 0x303030],

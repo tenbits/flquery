@@ -56,8 +56,9 @@ class bada.dom.css.StyleSheet
 		fontSize: null,
 		fontFamily: null,
 		textShadow: null, // todo
-		verticalAlign: 1,
+		verticalAlign: null,
 		textAlign: null,
+		lineHeight: null, // todo
 		wordWrap:null,
 		autoSize:null
 	};
@@ -115,6 +116,7 @@ class bada.dom.css.StyleSheet
 	public var fontFamily:String;
 	public var wordWrap:Boolean;
 	public var autoSize:String;	
+	public var lineHeight:Number; 
 	public var verticalAlign:String;
 	public var textAlign:String; // horizontalAlign;
 	
@@ -127,8 +129,7 @@ class bada.dom.css.StyleSheet
 		
 		this.paddingBottom = this.paddingLeft = this.paddingRight = this.paddingTop = 0;
 		this.marginBottom = this.marginLeft = this.marginRight = this.marginTop = 0;
-		this.display = 'block';
-		
+		this.display = 'block';		
 		this.borderRadiusBottomLeft = 0;
 		this.borderRadiusBottomRight = 0;
 		this.borderRadiusTopLeft = 0;
@@ -136,12 +137,14 @@ class bada.dom.css.StyleSheet
 		
 		this.backgroundOpacity = 100;
 		
+		this._width = -1;
+		this._height = -1;
 		//this.parseCss(css);
 		//this.inheritCss(this._node.style, css);		
 	}
 	
 	
-	public function parseCss(css:Object) {
+	/*public function parseCss(css:Object) {
 		for (var key in css) {
 			switch(key) {
 				case 'x':
@@ -176,11 +179,11 @@ class bada.dom.css.StyleSheet
 					break;
 			}
 		}
-	}
+	}*/
 	
 	public function inheritCss(parents:StyleSheet, currentCss:Object) {
-		if (this._width == null && this.display != 'inline-block') {
-			if (parents.width != null){
+		if (this._width == -1 && this.display != 'inline-block') {
+			if (parents.width > 0){
 				this.width = parents.width - parents.paddingLeft - parents.paddingRight - this.marginRight - this.marginLeft;				
 			}
 		}		

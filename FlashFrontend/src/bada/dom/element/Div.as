@@ -2,6 +2,7 @@
 import bada.dom.css.BackgroundHelper;
 import bada.dom.css.BorderImage;
 import bada.dom.css.CSSEngine;
+import bada.dom.css.StyleSheet;
 import bada.dom.events.EventManager;
 import bada.dom.helper.EventHandler;
 import bada.dom.helper.XmlParser;
@@ -141,8 +142,6 @@ class bada.dom.element.Div extends INode{
 		//-CSSEngine.parseClass(this);
 		
 		this._classes = StyleSheets.getClasses(this);
-		
-		
 		this._mergedCss = this._classes == null ? this._css : Helper.extend(StyleSheets.combineClasses(this._classes), this._css);
 		
 		
@@ -301,17 +300,31 @@ class bada.dom.element.Div extends INode{
 			}
 		}
 		
-		if (this.style.position == 'static' && 
-			this._css.height == null && 
-			child.style.position == 'static' &&
-			child.style.display !== 'none') {			
+		if (this.style.position === 'static') {
+			var resized = false;
+			if (this._mergedCss.height == null) {
+				var h = child.y + child.height + this.style.paddingBottom;
+				if (h > this.style.height) {
+					this.style.height = h;
+					resized = true;
+				}				
+			}
+			if (this._mergedCss.width == null) {
+				var w = child.x + child.width + this.style.paddingRight;
+				if (w > this.style.width) {
+					this.style.width = w;
+					resized = true;
+				}
+			}
 			
-			this.style.height = child.y + child.height + this.style.paddingBottom;
-			this.onChildResized(child);			
+			if (this._mergedCss.x === '50%') {
+				this.x = (this.parent.width - this.width) / 2;
+			}
+			
+			if (resized) this.onChildResized(child);			
 		}
 		
-		if (this._css.textAlign == 'center') {
-			
+		if (this._mergedCss.textAlign == 'center') {			
 			var width = this.width;
 			var childs = this._children.length;
 			var cell = width / childs;			
@@ -320,7 +333,7 @@ class bada.dom.element.Div extends INode{
 			}
 		}
 		
-		if (this._css.verticalAlign == 'middle') {
+		if (this._mergedCss.verticalAlign == 'middle') {
 			child.y = (this.height - child.height) / 2;
 		}
 		
@@ -343,6 +356,24 @@ class bada.dom.element.Div extends INode{
 		if (lastChild == null) lastChild = this.last('style[position=static]');
 		
 		this.style.height = lastChild.y + lastChild.height + this.style.paddingBottom;
+		if (this.style.display == 'inline-block') {			
+			/* 
+			var width = 0;
+			for (var j:Number = 0; j < this._children.length; j++) 
+			{
+				var node:INode = this._children[j];
+				var w = node.width + node.y + node.style.marginRight + this.style.paddingRight;
+				if (w > width) width = w;
+			}*/
+			var w = child.width + child.y + child.style.marginRight + this.style.paddingRight;
+			if (this.style.width == null || this.style.width < w) {				
+				this.style.width = w;
+			}
+		}
+		
+		if (this._tagName === 'button') {
+			Bada.log(this._tagName, this.width, this.height);
+		}
 		
 		if (this.style.position === 'static') Div(this.parent).onChildResized(this);
 		BackgroundHelper.render2(this);	

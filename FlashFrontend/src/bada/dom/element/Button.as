@@ -1,4 +1,5 @@
 import bada.dom.*;
+import bada.dom.css.BackgroundHelper;
 import bada.dom.element.*;
 import bada.Helper;
 import bada.Utils;
@@ -16,7 +17,6 @@ class bada.dom.element.Button extends Div{
 
 	private function render():INode {
 		super.render();
-		
 		
 		Button.clipdiv2(this);
 		
@@ -69,20 +69,29 @@ class bada.dom.element.Button extends Div{
 		button.style.height = height;
 	}
     
-    private function renderText(button:Button) {
+	private function renderText(button:Button) {
 		if (button._text == null) return;
 		
 		var css = {
-			verticalAlign: 'middle',
-			textAlign: 'center',
-			height: button.height - 4,
-			width: button.width
+			//verticalAlign: 'middle',
+			//textAlign: 'center',
+			display: 'inline-block',
+			position: 'static'
 		};
 		
-		button._span = new Span(button._text, css);
+		if (button.width > 0) {
+			css.width = button.width;
+		}
+		
+		/*button._span = new Span(button._text, css);		
 		button._span._parent = button;			
 		button._children.push(button._span.render());
+		*/
 		
+		button.style.padding = [5, 10, 5, 10];
+		
+		button.append(new Span(button._text, css));
+		//BackgroundHelper.render2(button);
 	}
 
 }

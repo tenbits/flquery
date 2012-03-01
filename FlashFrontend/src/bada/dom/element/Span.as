@@ -22,7 +22,8 @@ class bada.dom.element.Span extends INode{
 		this._tagName = 'span';
 		super.init.apply(this, arguments);
 		
-		this.style.height = -1; // 'auto';
+		/*this.style.height = -1; // 'auto';
+		this.style.width = -1; // 'auto';*/
 		
 		if (arguments[0] instanceof Div) {
 			_parent = arguments[0];
@@ -118,11 +119,14 @@ class bada.dom.element.Span extends INode{
 		
 		
 		
-		var class_:Object = StyleSheets.getCss(this),
-		css = class_ == null ? this._css : Helper.extend(class_, this._css);
-		this.style.inheritCss(this.parent.style, css);	
+		this._classes = StyleSheets.getClasses(this);
+		this._mergedCss = this._classes == null ? this._css : Helper.extend(StyleSheets.combineClasses(this._classes), this._css);
 		
-		CSSEngine.calculateCss(this, css);
+		this.style.inheritCss(this.parent.style, this._mergedCss);	
+		
+		
+		CSSEngine.calculateCss(this, this._mergedCss);
+		
 		
 		if (this.style.textShadow) {            
 			/*this._shadowSpan = (new Span(this._text)).appendTo(this._parent);  
@@ -131,12 +135,17 @@ class bada.dom.element.Span extends INode{
 			Shadow.renderTextShadow(this, this._html);
 		}
 		
-		parentMovie.createTextField('text' + depth, depth, this.style.x, this.style.y, this.style.width || 200, this.style.height || 40);
+		var width = this.style.width < 0 ? 200 : this.style.width,
+		height = this.style.height < 0 ? 10 : this.style.height;
+		
+		parentMovie.createTextField('text' + depth, depth, this.style.x, this.style.y, width, height);
+		
 		this._textField = parentMovie['text' + depth];
 		this._textField.multiline = true;
 		this._textField.wordWrap = true;
 		this._textField.autoSize = true;
 		this._textField.selectable = false;
+		this._textField.condenseWhite = true;
 		
 		if (this._html) {
 			this._textField.multiline = true;
@@ -146,11 +155,12 @@ class bada.dom.element.Span extends INode{
 			this._textField.text = this._text || '';			
 		}        
 		
-		CSSEngine.render(this, css);
+		CSSEngine.render(this, this._mergedCss);
 		
 		
 		if (this.style.verticalAlign == 'middle') {
-			var height = this._textField.textHeight;
+			height = this._textField.textHeight;
+			
 			var lineheight = this.style.height;
 			
 			var dy = (lineheight - height) / 2;
@@ -158,6 +168,10 @@ class bada.dom.element.Span extends INode{
 				this._textField._y += dy;
 			}
 		}
+		
+		/*if (this.style.lineHeight) {
+			var letterHeight = this._font.getTextExtent('a').height;			
+		}*/
 		
 		/** [size,color,dx,dy,alpha] */
 		if (this._shadowSpan) {
@@ -183,6 +197,8 @@ class bada.dom.element.Span extends INode{
 		
 		if (this._parent._children == null) this._parent._children = [];
 		this._parent._children.push(this);
+		
+		
 		
 		return this;
 	}
@@ -255,7 +271,6 @@ class bada.dom.element.Span extends INode{
 		}
 		if (this._css.autoSize == 'center') _font.align = 'center';
 		
-		
 		_textField.setTextFormat(_font);
 		
 	}
@@ -267,7 +282,7 @@ class bada.dom.element.Span extends INode{
 	}
 	
 	public function get height():Number {
-		if (this.style.height == -1) return this._textField.textHeight;
+		if (this.style.height == -1) return this._textField._height;//.textHeight;
 		return this.style.height;
 	}
 	public function set height(value) {
@@ -275,7 +290,7 @@ class bada.dom.element.Span extends INode{
 	}
 	
 	public function get width():Number {
-		if (this.style.width == -1) return this._textField.textWidth;
+		if (this.style.width == -1) return this._textField.textWidth + 6 /** + 6 bug? - textWidth is always 6 pixel smaller as must be*/;
 		return this.style.width;
 	}
 	public function set width(value) {

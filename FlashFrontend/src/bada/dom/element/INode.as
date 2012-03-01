@@ -460,8 +460,9 @@ class bada.dom.element.INode{
 		this.style.width = value;		
 	}
 	public function get width():Number {
-		if (this.style.width != null)  return this.style.width;		
+		if (this.style.width != -1)  return this.style.width;		
 		if (this._css.width != null) return this._css.width;
+		if (this._mergedCss.width != null) return this._mergedCss.width;
 		return 0;
 	}
 	public function set height(value:Number):Void {
@@ -469,8 +470,9 @@ class bada.dom.element.INode{
 	}
 	
 	public function get height():Number {
-		if (this.style.height != null) return this.style.height;
+		if (this.style.height != -1) return this.style.height;
 		if (this._css.height != null) return this._css.height;
+		if (this._mergedCss.height != null) return this._mergedCss.height;
 		return 0;
 	}
 	public function set x(value:Number):Void {
