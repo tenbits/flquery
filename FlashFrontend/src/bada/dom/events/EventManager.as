@@ -152,10 +152,7 @@ class bada.dom.events.EventManager
 			return;
 		}
 		
-		if (event == 'touchEnd' && Dom.body.dragging){
-			/*for (var i = 0; i < _events.length; i++) {
-				if (_events[i].event == 'move')  _events[i].node.movie.onMouseMove = null;
-			}*/
+		if (event == 'touchEnd' && Dom.body.dragging) {			
 			delete Dom.body.movie.onMouseMove;
 			Dom.body.dragging = false;
 			Dom.body.trigger('moveEnd');
@@ -165,7 +162,6 @@ class bada.dom.events.EventManager
 		var top:Object = EventManager.topElement(event, x, y);
 		
 		if (top != null) {
-			//EventManager.bubble(top.node, top.event);
 			INode(top.node).trigger(event, new Event(top.node, x, y));
 		}
 	}

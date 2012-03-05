@@ -16,14 +16,10 @@ class bada.dom.element.INode{
 	private static var _counter:Number = 0;
 
 
-	public static function render():INode{
-		return null;
-	}
-
 	private var _index:Number;
 	private var _movie: MovieClip;
-
-	private var _textField:TextField;
+	private var _textField:TextField;	
+	private var _hoverClass:String; /**add class on touchStart*/
 
 	public var _canvas:BitmapData;
 	
@@ -54,8 +50,21 @@ class bada.dom.element.INode{
 	}
 	
 	/** override */
-	public function append() { }
-	public function applyCss() {}
+	public function append():INode { return this; }
+	public function applyCss():INode { return this; }
+	
+	/** data-value attributes @see html5 data */
+	private var _data:Object;
+	public function data():Object{
+		if (arguments.length == 1)  return this._data == null ? null : this._data[arguments[0]];
+		
+		if (arguments.length == 2){
+			if (_data == null) _data = {};
+			_data[arguments[0]] = arguments[1];
+			return this;
+		}
+	}
+    
 	
 	public function animate():INode{
 		if (arguments[0] === false){
@@ -100,7 +109,7 @@ class bada.dom.element.INode{
 		if (typeof arguments[0] == 'object') {
 			var css_ = arguments[0];			
 			Helper.extend(this._css, css_);			
-			CSSEngine.calculateCss(this, css_);			
+			CSSEngine.calculateCss(this, css_);	
 			CSSEngine.render(this, css_);						
 		}
 		else if (typeof arguments[0] === 'string'){
@@ -187,7 +196,7 @@ class bada.dom.element.INode{
 			case '_':
 				return this._name != null && selector === '_' + this._name;
 			case '.':
-				return this._classNames != null && this._classNames.hasOwnProperty(selector);
+				return this.hasClass(selector.substring(1, selector.length));
 			case 's':
 				if (selector.indexOf('style[', 0) == 0) {
 					var paar = selector.substring(6, selector.length - 1).split('=');
@@ -401,13 +410,13 @@ class bada.dom.element.INode{
 		Event(arguments[1]).currentTarget = this;
 		if (this._events) r = this._events.trigger.apply(this._events, arguments);
 		if (r == false) return false;
-		for (var i:Number = 0; i < this._children; i++)
-		{
-			if (this._children[i]._events == null) continue;
-			
-			r = this._children[i]._events.trigger.apply(this._children[i]._events, arguments);
-			if (r == false) return false;
+		
+		/** bubble */
+		if (this._parent != null)  {
+			this._parent.trigger.apply(this._parent, arguments);
 		}
+		
+		
 		return true;
 	}
 
@@ -713,64 +722,75 @@ class bada.dom.element.INode{
 		return this._classNames.hasOwnProperty(className);
 	}
 	
-	function addClass(className:String):INode {		
-		if (this.hasClass(className)) return this;		
-		var cssclass:CssClass = StyleSheets.getClassForNode(className, this);		
+	/**
+	 * @param	className Name of a CssClass or CSS Object to add
+	 * @return
+	 */
+	function addClass(className:Object):INode {		
+		if (this.hasClass(String(className))) return this;
 		
-		if (this._classNames == null) this._classNames = { };
-		this._classNames[className] = null;
+		var css_:Object = null;
+		if (typeof className === 'string'){
+			var cssclass:CssClass = StyleSheets.getClassForNode(String(className), this);				
+			if (this._classNames == null) this._classNames = { };
+			this._classNames[className] = null;		
+			if (cssclass == null) return this;		
+			if (this._classes == null) this._classes = [];
+			this._classes.push(cssclass);
+			css_ = Helper.extend(null, cssclass.css);
+		}
+		else if (typeof className === 'object') {
+			css_ = className;
+		}
 		
-		if (cssclass == null) return this;
-		
-		if (this._classes == null) this._classes = [];
-		this._classes.push(cssclass);
-		
-		var css_ = Helper.extend(null, cssclass.css);
 		CSSEngine.calculateCss(this, css_);			
 		CSSEngine.render(this, css_);			
 		
 		return this;
 	}
 	
-	function removeClass(className:String):INode {
-		if (this._classNames == null) return this;
-		/*if (this._classNames[className] == null) {
+	/**
+	 * @param	className Name of a CssClass to remove or CSS Object to remove
+	 * @return
+	 */
+	function removeClass(className:Object):INode {
+		
+		var cssToRemove:Object;
+		if (typeof className === 'string'){
+			if (this._classNames == null) return this;	
+			if (this.hasClass(String(className)) == false) return this;
 			delete this._classNames[className];
-			return this;
-		}
-		*/
-		if (this.hasClass(className) == false) return this;
-		delete this._classNames[className];
-		
-		var class_:CssClass;
-		for (var i:Number = 0; i < this._classes.length; i++) 
-		{
-			if (this._classes[i].className == className) {
-				class_ = this._classes.splice(i, 1)[0];
-				break;
+			
+			var class_:CssClass;
+			for (var i:Number = 0; i < this._classes.length; i++) 
+			{
+				if (this._classes[i].className == className) {
+					class_ = this._classes.splice(i, 1)[0];
+					break;
+				}
 			}
+			if (class_ == null) return this;
+			
+			cssToRemove = class_.css;
 		}
-		if (class_ == null) return this;
-		
+		else if (typeof className === 'object') {
+			cssToRemove = className;
+		}
 		
 		var css_:Object = {};
 		
 		for (var j:Number = 0; j < this._classes.length; j++) 
 		{
-			Helper.extendOnly(css_, this._classes[j].css, class_.css);
+			Helper.extendOnly(css_, this._classes[j].css, cssToRemove);
 		}		
-		Helper.extendOnly(css_, this._css, class_.css);
 		
+		Helper.extendOnly(css_, this._css, cssToRemove);	
 		
-		CSSEngine.calculateCss(this, css_);			
+		Defaults.extend(css_);
+		
+		CSSEngine.calculateCss(this, css_);	
 		CSSEngine.render(this, css_);					
 		return this;
 	}
 	
-	/*private var _hover:Object;
-	public function set hover(value:Object) {
-		this._hover = value;
-		
-		this.hover(
-	}*/
 }

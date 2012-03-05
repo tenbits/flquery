@@ -6,10 +6,35 @@
   <frame>
     <library>
       <clip id="__sharepoint__" />
-      <clip id="src.resources.800.carbon.png" name="src.resources.800.carbon.png" import="src\resources\800\carbon.png" size="1313" modified="24.02.2012 0:57:41" />
-      <bitmap id="src.resources.800.img00.png" name="src.resources.800.img00.png" import="src\resources\800\img00.png" size="1097" modified="27.02.2012 0:04:38" />
-      <clip id="src.resources.800.carbon.png" name="src.resources.800.carbon.png" import="src\resources\800\carbon.png" size="1313" modified="24.02.2012 0:57:41" />
-      <clip id="src.resources.800.noise.png" name="src.resources.800.noise.png" import="src\resources\800\noise.png" size="25228" modified="26.02.2012 15:22:46" />
+      <clip id="src.resources.800.ex.background.carbon.png" name="src.resources.800.ex.background.carbon.png" import="src\resources\800\ex\background\carbon.png" size="1313" modified="24.02.2012 0:57:41" />
+      <clip id="src.resources.800.ex.background.noise.png" name="src.resources.800.ex.background.noise.png" import="src\resources\800\ex\background\noise.png" size="25228" modified="26.02.2012 15:22:46" />
+      <clip id="src.resources.800.ex.list.list-item-divider.png" name="src.resources.800.ex.list.list-item-divider.png" import="src\resources\800\ex\list\list-item-divider.png" size="3132" modified="21.10.2011 8:52:42" />
+      <font id="src.resources.fonts.CicleFina.ttf" name="src.resources.fonts.CicleFina.ttf" import="src\resources\fonts\CicleFina.ttf" glyphs="1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ `~!@#$%^&amp;*()-_=+[]{}\|;:'&quot;,./&lt;&gt;?" size="55412" modified="08.02.2012 15:28:42" />
+      <font id="src.resources.fonts.CicleFinaItalic.ttf" name="src.resources.fonts.CicleFinaItalic.ttf" import="src\resources\fonts\CicleFinaItalic.ttf" glyphs="1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ `~!@#$%^&amp;*()-_=+[]{}\|;:'&quot;,./&lt;&gt;?" size="46684" modified="08.02.2012 15:28:42" />
+      <font id="src.resources.fonts.CicleGordita.ttf" name="src.resources.fonts.CicleGordita.ttf" import="src\resources\fonts\CicleGordita.ttf" glyphs="1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ `~!@#$%^&amp;*()-_=+[]{}\|;:'&quot;,./&lt;&gt;?" size="52536" modified="08.02.2012 15:28:42" />
+      <font id="src.resources.fonts.CicleGorditaItalic.ttf" name="src.resources.fonts.CicleGorditaItalic.ttf" import="src\resources\fonts\CicleGorditaItalic.ttf" glyphs="1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ `~!@#$%^&amp;*()-_=+[]{}\|;:'&quot;,./&lt;&gt;?" size="43900" modified="08.02.2012 15:28:42" />
+      <font id="src.resources.fonts.CicleSemi.ttf" name="src.resources.fonts.CicleSemi.ttf" import="src\resources\fonts\CicleSemi.ttf" glyphs="1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ `~!@#$%^&amp;*()-_=+[]{}\|;:'&quot;,./&lt;&gt;?" size="54324" modified="08.02.2012 15:28:42" />
+      <font id="src.resources.fonts.CicleSemiItalic.ttf" name="src.resources.fonts.CicleSemiItalic.ttf" import="src\resources\fonts\CicleSemiItalic.ttf" glyphs="1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ `~!@#$%^&amp;*()-_=+[]{}\|;:'&quot;,./&lt;&gt;?" size="45832" modified="08.02.2012 15:28:42" />
+      <font id="src.resources.fonts.CicleShadow.ttf" name="src.resources.fonts.CicleShadow.ttf" import="src\resources\fonts\CicleShadow.ttf" glyphs="1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ `~!@#$%^&amp;*()-_=+[]{}\|;:'&quot;,./&lt;&gt;?" size="77976" modified="08.02.2012 15:28:42" />
+      <clip id="src.resources.800.ex.checkbox.png" name="src.resources.800.ex.checkbox.png" import="src\resources\800\ex\checkbox.png" size="4220" modified="02.03.2012 19:20:42" />
+      <clip id="src.resources.800.ex.icon-1.png" name="src.resources.800.ex.icon-1.png" import="src\resources\800\ex\icon-1.png" size="10366" modified="05.03.2012 8:48:32" />
+      <clip id="src.resources.800.ex.icon-2.png" name="src.resources.800.ex.icon-2.png" import="src\resources\800\ex\icon-2.png" size="7815" modified="05.03.2012 8:48:55" />
+      <clip id="src.resources.800.ex.icon-3.png" name="src.resources.800.ex.icon-3.png" import="src\resources\800\ex\icon-3.png" size="9460" modified="05.03.2012 8:47:59" />
+      <bitmap id="src.resources.800.ex.input.bitmap.png" name="src.resources.800.ex.input.bitmap.png" import="src\resources\800\ex\input.bitmap.png" size="3641" modified="04.03.2012 20:23:53" />
+      <clip id="src.resources.800.ex.menu_off.png" name="src.resources.800.ex.menu_off.png" import="src\resources\800\ex\menu_off.png" size="1107" modified="06.01.2012 1:02:11" />
+      <clip id="src.resources.800.ex.menu_on.png" name="src.resources.800.ex.menu_on.png" import="src\resources\800\ex\menu_on.png" size="3725" modified="05.01.2012 19:18:13" />
+      <clip id="src.resources.800.ex.slider_head.png" name="src.resources.800.ex.slider_head.png" import="src\resources\800\ex\slider_head.png" size="879" modified="24.01.2012 20:25:54" />
+      <clip id="src.resources.800.ex.slider_line.png" name="src.resources.800.ex.slider_line.png" import="src\resources\800\ex\slider_line.png" size="299" modified="25.01.2012 5:28:27" />
+      <clip id="src.resources.800.ex.spinner-large.png" name="src.resources.800.ex.spinner-large.png" import="src\resources\800\ex\spinner-large.png" size="17782" modified="04.03.2012 22:19:39" />
+      <clip id="src.resources.800.ex.toggleslide.png" name="src.resources.800.ex.toggleslide.png" import="src\resources\800\ex\toggleslide.png" size="4188" modified="04.03.2012 20:06:13" />
+      <clip id="src.resources.800.ex.background.carbon.png" name="src.resources.800.ex.background.carbon.png" import="src\resources\800\ex\background\carbon.png" size="1313" modified="24.02.2012 0:57:41" />
+      <bitmap id="src.resources.800.ex.background.combobox.bitmap.png" name="src.resources.800.ex.background.combobox.bitmap.png" import="src\resources\800\ex\background\combobox.bitmap.png" size="1175" modified="21.10.2011 8:52:42" />
+      <clip id="src.resources.800.ex.background.group-labeled.png" name="src.resources.800.ex.background.group-labeled.png" import="src\resources\800\ex\background\group-labeled.png" size="1922" modified="21.10.2011 8:52:42" />
+      <bitmap id="src.resources.800.ex.background.header.bitmap.png" name="src.resources.800.ex.background.header.bitmap.png" import="src\resources\800\ex\background\header.bitmap.png" size="2793" modified="02.03.2012 16:13:35" />
+      <bitmap id="src.resources.800.ex.background.menu.bitmap.png" name="src.resources.800.ex.background.menu.bitmap.png" import="src\resources\800\ex\background\menu.bitmap.png" size="3568" modified="21.10.2011 8:52:42" />
+      <clip id="src.resources.800.ex.background.noise.png" name="src.resources.800.ex.background.noise.png" import="src\resources\800\ex\background\noise.png" size="25228" modified="26.02.2012 15:22:46" />
+      <clip id="src.resources.800.ex.background.test.png" name="src.resources.800.ex.background.test.png" import="src\resources\800\ex\background\test.png" size="8856" modified="02.03.2012 17:10:20" />
+      <clip id="src.resources.800.ex.list.list-item-divider.png" name="src.resources.800.ex.list.list-item-divider.png" import="src\resources\800\ex\list\list-item-divider.png" size="3132" modified="21.10.2011 8:52:42" />
     </library>
   </frame>
 </movie>

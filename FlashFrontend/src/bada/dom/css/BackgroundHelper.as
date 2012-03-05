@@ -1,5 +1,6 @@
 import bada.dom.CSS;
 import bada.dom.css.Border;
+import bada.dom.css.BorderImage;
 import bada.dom.css.Gradient;
 import bada.dom.css.Shadow;
 import bada.dom.element.Div;
@@ -21,13 +22,22 @@ class bada.dom.css.BackgroundHelper
 		boxShadow:Shadow = div.style.boxShadow,
 		movie:MovieClip = div.movie,
 		width:Number = div.width,
-		height:Number = div.height;
-		
+		height:Number = div.height;		
 		movie.clear();
+		
 		if (width < 1 || height < 1) return;
 		
 		if (boxShadow != null) {
 			BackgroundHelper.drawShadow(div, boxShadow);
+		}
+		
+		if (div.style.borderImage != null){
+			div._canvas = Graphics.drawBorderImage(div.movie, 
+				width, 
+				height, 
+				div.style.borderImage.source, 
+				div.style.borderImage.borderWidth, 
+				div.style.borderImage.crop);
 		}
 		
 		if (backgroundColor != null || gradient != null || border != null) {
@@ -37,12 +47,12 @@ class bada.dom.css.BackgroundHelper
 				movie.beginFill(backgroundColor, div.style.backgroundOpacity);
 			}
 			if (gradient != null) {
-				movie.beginGradientFill('linear', gradient.colors, gradient.alphas, gradient.ratios, {
+				movie.beginGradientFill(gradient.type, gradient.colors, gradient.alphas, gradient.ratios, {
 					matrixType: "box",
 					x: gradient.x,
 					y: gradient.y,
-					w: width,
-					h: height,
+					w: gradient.width || width,
+					h: gradient.height || height,
 					r: gradient.radius
 				});
 			}
@@ -60,7 +70,7 @@ class bada.dom.css.BackgroundHelper
 				movie.curveTo(width, 0, width, div.style.borderRadiusTopRight);			  
 			}
 			
-			//if (hasBorder) movie.lineStyle(border.rightWidth, border.rightColor, border.rightOpacity,true, 'normal','none');
+			if (hasBorder) movie.lineStyle(border.rightWidth, border.rightColor, border.rightOpacity,true, 'normal','none');
 			
 			
 			movie.lineTo(width, height - div.style.borderRadiusBottomRight);
@@ -69,11 +79,11 @@ class bada.dom.css.BackgroundHelper
 			}
 			
 			
-			//if (hasBorder) movie.lineStyle(border.bottomWidth, border.bottomColor, border.bottomOpacity,true, 'normal','none');		
+			if (hasBorder) movie.lineStyle(border.bottomWidth, border.bottomColor, border.bottomOpacity,true, 'normal','none');		
 			movie.lineTo(div.style.borderRadiusBottomLeft, height);
 			
 			
-			//if (hasBorder) movie.lineStyle(border.leftWidth, border.leftColor, border.leftOpacity,true, 'normal','none');
+			if (hasBorder) movie.lineStyle(border.leftWidth, border.leftColor, border.leftOpacity,true, 'normal','none');
 			if (div.style.borderRadiusBottomLeft > 0){
 				movie.curveTo(0, height, 0, height - div.style.borderRadiusBottomLeft);		  
 			}
@@ -147,15 +157,16 @@ class bada.dom.css.BackgroundHelper
 		drawer = div.style.borderRadius > 0 ? Graphics.outlineRoundedRectangle : Graphics.outlineRectangle,
 		color = shadow.color,
 		width = div.width,
+		height = div.height,
 		step = 1;
 		
 		for (var i:Number = 0; i < size; i+= step) 
 		{
 			movie.beginFill(color, 100 - (size * blur) - i * blur);	
-			drawer(movie, new Rectangle(0 - i + dx, 0 - i + dy, width + i * 2, width + i * 2), div.style.borderRadius);
+			drawer(movie, new Rectangle(0 - i + dx, 0 - i + dy, width + i * 2, height + i * 2), div.style.borderRadius);
 			if (i != 0) 
 			{
-				drawer(movie, new Rectangle(0 - i + step + dx, 0 - i + step + dy, width + i * 2 - 2 * step, width + i * 2 - 2 * step), div.style.borderRadius);
+				drawer(movie, new Rectangle(0 - i + step + dx, 0 - i + step + dy, width + i * 2 - 2 * step, height + i * 2 - 2 * step), div.style.borderRadius);
 			}				
 			movie.endFill();
 		}

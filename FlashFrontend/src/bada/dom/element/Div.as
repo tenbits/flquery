@@ -1,43 +1,22 @@
-﻿import bada.dom.CSS;
-import bada.dom.css.BackgroundHelper;
+﻿import bada.dom.css.BackgroundHelper;
 import bada.dom.css.BorderImage;
 import bada.dom.css.CSSEngine;
-import bada.dom.css.StyleSheet;
-import bada.dom.events.EventManager;
-import bada.dom.helper.EventHandler;
-import bada.dom.helper.XmlParser;
 import bada.dom.element.INode;
+import bada.dom.events.EventManager;
+import bada.dom.helper.XmlParser;
 import bada.dom.NodesFactory;
 import bada.dom.Scroller;
-import bada.dom.element.Span;
 import bada.dom.StyleSheets;
 import bada.Graphics;
 import bada.Helper;
 import bada.Utils;
-import bada.views.DebugView;
-import flash.display.BitmapData;
 
 class bada.dom.element.Div extends INode{
 	public var dragging:Boolean;
 
 	private var scroller:Scroller;
-	private var _data:Object = null;
-
-
-
-	public function data():Object{
-		
-		
-		if (arguments.length == 1){
-			return _data == null ? null : _data[arguments[0]];
-		}
-		if (arguments.length == 2){
-			if (_data == null) _data = {};
-			_data[arguments[0]] = arguments[1];
-			return this;
-		}
-	}
-    
+	
+	
     /**
      * @arguments:
      * 1. [_movie:MovieClip,_id:String,_css:Object,_class:Array||String]
@@ -106,7 +85,9 @@ class bada.dom.element.Div extends INode{
 			
 			if (data.tag != null) this._tagName = data.tag;		
 			children = data._children || null;			
-			if (data._data) _data = data._data;				
+			if (data._data) _data = data._data;	
+			
+			this._hoverClass = data.hover;
 		}
 		
 		
@@ -122,8 +103,8 @@ class bada.dom.element.Div extends INode{
 			}			
 		}
 		
-		if (children) this.append(children);
 		
+		if (children) this.append(children);
 		return data;
 	}
     
@@ -144,12 +125,13 @@ class bada.dom.element.Div extends INode{
 		this._classes = StyleSheets.getClasses(this);
 		this._mergedCss = this._classes == null ? this._css : Helper.extend(StyleSheets.combineClasses(this._classes), this._css);
 		
-		
+		CSSEngine.calculateDimension(this, this._mergedCss);
 		
 		if (this._mergedCss.backgroundImage) {
 			/** width/height fix */
 			CSSEngine.backgroundImage(this, this._mergedCss);
 		}
+		
 		
 		CSSEngine.calculateCss(this, this._mergedCss);
 		
@@ -158,7 +140,9 @@ class bada.dom.element.Div extends INode{
 		
 		CSSEngine.render(this, this._mergedCss, true);
 		
-		if (this._children) {
+		
+		
+		if (this._children) {			
 			var _children = this._children;
 			this._children = null;
 			this.append(_children);
@@ -168,12 +152,16 @@ class bada.dom.element.Div extends INode{
 			EventManager.bindAll(this);
 		}
 		
-		if (this.onresize instanceof Function) this.onresize();
+		if (this._hoverClass != null) {
+			this.hover(this.addClass.bind(this, this._hoverClass), this.removeClass.bind(this, this._hoverClass));			
+		}
 		
-		/**  */
+		
 		if (this._parent._children == null) this._parent._children = [];
 		this._parent._children.push(this);
 		
+		
+		if (this.onresize instanceof Function) this.onresize();		
 		return this;
     }
 	
@@ -209,7 +197,7 @@ class bada.dom.element.Div extends INode{
 				{
 					NodesFactory.create(this,item);
 				}
-			}
+			}			
 		}
 		else if (children instanceof INode) {
 			children._parent = this;			
@@ -217,8 +205,9 @@ class bada.dom.element.Div extends INode{
 		}
 		else if (typeof children === 'object') {
 			//if (children._name == 'scroller' || children._name == 'overflowMask') container = this;
-			this._children.push(NodesFactory.create(this, children));
+			NodesFactory.create(this, children);
 		}
+		
 		
 		this.afterChildAppend(this._children[this._children.length - 1]);
 		return this;
@@ -238,11 +227,11 @@ class bada.dom.element.Div extends INode{
 		switch(key) {		
 			case 'borderImage':
 				/** value: [resourceImageFile:String, broderSize:Number, cropp:Rectangle ] */				
-				var border:BorderImage = this.style.borderImage;
+				/*var border:BorderImage = this.style.borderImage;
 				if (border){
 					this._canvas = Graphics.drawBorderImage(this._movie, 
 								this.width, this.height, border.source, border.borderWidth, border.crop);
-				}
+				}*/
 				return;		
 			case 'display':
 				if (this.style.display == 'none') this.toggle(false);
@@ -263,9 +252,7 @@ class bada.dom.element.Div extends INode{
 								padding: this._css.padding
 						}));
 						
-						Bada.log('before init scroller',container.width, container.height);
-						this.scroller = new Scroller(this, container);
-						Bada.log('after init scroller', container);
+						this.scroller = new Scroller(this, container);						
 					}else {
 						this.scroller.refresh(this.width, this.height);
 					}
@@ -276,6 +263,8 @@ class bada.dom.element.Div extends INode{
     
 	
 	private function afterChildAppend(child:INode) {
+		if (child == null) return;
+		
 		if (this.style.overflow == 'hidden' || this.style.overflow == 'scroll') {
 			var mask:MovieClip = this._movie.overflowMask;
 			if (mask == null) {
@@ -300,12 +289,12 @@ class bada.dom.element.Div extends INode{
 			}
 		}
 		
-		if (this.style.position === 'static') {
+		//if (this.style.position === 'static') {
 			var resized = false;
 			if (this._mergedCss.height == null) {
 				var h = child.y + child.height + this.style.paddingBottom;
 				if (h > this.style.height) {
-					this.style.height = h;
+					this.style.height = h;				
 					resized = true;
 				}				
 			}
@@ -313,33 +302,54 @@ class bada.dom.element.Div extends INode{
 				var w = child.x + child.width + this.style.paddingRight;
 				if (w > this.style.width) {
 					this.style.width = w;
-					resized = true;
+					resized = true;					
+				}				
+			}
+			
+			if (resized) {
+				BackgroundHelper.render2(this);
+				
+				if (this._mergedCss.x === '50%') {
+					this.x = (this.parent.width - this.width) / 2;
+				}
+				if (this._mergedCss.y === '50%') {
+					this.y = (this.parent.height - this.height) / 2;
+				}
+				if (this._mergedCss.right != null) {
+					this.x = this._parent.width - this._mergedCss.right - this._parent.style.paddingRight - this.width;
+				}
+				if (this._mergedCss.bottom != null) {
+					this.y = this._parent.height - this._mergedCss.right - this._parent.style.paddingRight - this.width;
+				}
+				
+				if (this.style.position === 'static'){
+					this.parent.asDiv().onChildResized(this);			
 				}
 			}
 			
-			if (this._mergedCss.x === '50%') {
-				this.x = (this.parent.width - this.width) / 2;
-			}
 			
-			if (resized) this.onChildResized(child);			
+		//}
+		
+		if (this._id == 'drp') {
+			Bada.log('after child append', this.style.width);
 		}
 		
 		if (this._mergedCss.textAlign == 'center') {			
 			var width = this.width;
 			var childs = this._children.length;
-			var cell = width / childs;			
+			var cell = width / childs;	
 			for (var i = 0; i < childs; i++) {
 				this._children[i].x = cell * i + (cell - this._children[i].width) / 2;
 			}
 		}
 		
 		if (this._mergedCss.verticalAlign == 'middle') {
-			child.y = (this.height - child.height) / 2;
+			child.y = (this.height - child.height) / 2;			
 		}
 		
 	}
 	
-	public function onChildResized(child:INode, lastChild:INode) {
+	public function onChildResized(child:INode, lastChild:INode) {	
 		
 		var pos:Number = child.childAt();
 		var last:INode = child;
@@ -356,6 +366,7 @@ class bada.dom.element.Div extends INode{
 		if (lastChild == null) lastChild = this.last('style[position=static]');
 		
 		this.style.height = lastChild.y + lastChild.height + this.style.paddingBottom;
+	
 		if (this.style.display == 'inline-block') {			
 			/* 
 			var width = 0;
@@ -365,17 +376,16 @@ class bada.dom.element.Div extends INode{
 				var w = node.width + node.y + node.style.marginRight + this.style.paddingRight;
 				if (w > width) width = w;
 			}*/
-			var w = child.width + child.y + child.style.marginRight + this.style.paddingRight;
-			if (this.style.width == null || this.style.width < w) {				
+			var w = child.width + child.x + child.style.marginRight + this.style.paddingRight;
+			if (this.style.width < w) {				
 				this.style.width = w;
-			}
+			}			
 		}
 		
-		if (this._tagName === 'button') {
-			Bada.log(this._tagName, this.width, this.height);
-		}
 		
 		if (this.style.position === 'static') Div(this.parent).onChildResized(this);
+		
+		
 		BackgroundHelper.render2(this);	
 	}
 	

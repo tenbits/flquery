@@ -40,9 +40,44 @@
   <!--some comment-->
   <library>
     <asset path="src\resources\800\carbon.png" bitmap="False" />
-	<asset embedded="1" bitmap="True" path="src\resources\800\img00.png" />
-    <asset embedded="1" bitmap="False" path="src\resources\800\carbon.png" />
-    <asset embedded="1" bitmap="False" path="src\resources\800\noise.png" />
+    <asset path="src\resources\800\ex\background\carbon.png" bitmap="False" />
+    <asset path="src\resources\800\ex\background\header.png" bitmap="False" />
+    <asset path="src\resources\800\ex\background\noise.png" bitmap="False" />
+    <asset path="src\resources\800\ex\list\list-item-divider.png" bitmap="False" />
+    <asset path="src\resources\BOGSTAND.TTF" />
+    <asset path="src\resources\font\circlefina\CicleFina.ttf" />
+    <asset path="src\resources\font\circlefina\CicleFinaItalic.ttf" />
+    <asset path="src\resources\font\circlefina\CicleGordita.ttf" />
+    <asset path="src\resources\font\circlefina\CicleGorditaItalic.ttf" />
+    <asset path="src\resources\font\circlefina\CicleSemi.ttf" />
+    <asset path="src\resources\font\circlefina\CicleSemiItalic.ttf" />
+    <asset path="src\resources\font\circlefina\CicleShadow.ttf" />
+    <asset path="src\resources\fonts\CicleFina.ttf" />
+    <asset path="src\resources\fonts\CicleFinaItalic.ttf" />
+    <asset path="src\resources\fonts\CicleGordita.ttf" />
+    <asset path="src\resources\fonts\CicleGorditaItalic.ttf" />
+    <asset path="src\resources\fonts\CicleSemi.ttf" />
+    <asset path="src\resources\fonts\CicleSemiItalic.ttf" />
+    <asset path="src\resources\fonts\CicleShadow.ttf" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\checkbox.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\icon-1.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\icon-2.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\icon-3.png" />
+    <asset embedded="1" bitmap="True" path="src\resources\800\ex\input.bitmap.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\menu_off.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\menu_on.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\slider_head.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\slider_line.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\spinner-large.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\toggleslide.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\background\carbon.png" />
+    <asset embedded="1" bitmap="True" path="src\resources\800\ex\background\combobox.bitmap.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\background\group-labeled.png" />
+    <asset embedded="1" bitmap="True" path="src\resources\800\ex\background\header.bitmap.png" />
+    <asset embedded="1" bitmap="True" path="src\resources\800\ex\background\menu.bitmap.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\background\noise.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\background\test.png" />
+    <asset embedded="1" bitmap="False" path="src\resources\800\ex\list\list-item-divider.png" />
   </library>
   <!--some comment-->
   <hiddenPaths>

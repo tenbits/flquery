@@ -52,7 +52,7 @@ class bada.dom.helper.StyleParser
 		}
 		if (key && value) {
 			//-handleStyle(node, key, value);			
-			node._css[key] = value;
+			node._css[key] = value;			
 		}
 		
 		return node._css;

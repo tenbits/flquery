@@ -18,7 +18,10 @@ class bada.dom.element.Button extends Div{
 	private function render():INode {
 		super.render();
 		
-		Button.clipdiv2(this);
+		if (Button.clipdiv2(this) == false && this._hoverClass == null){
+			this._hoverClass = 'hover';
+			this.hover(this.addClass.bind(this, this._hoverClass), this.removeClass.bind(this, this._hoverClass));		
+		}
 		
 		
 		if (this._text != null) {
@@ -50,10 +53,10 @@ class bada.dom.element.Button extends Div{
 		var img = movie.movie.backgroundImage
 		img._y = img._height / -2;
 	}	
-	private static function clipdiv2(button:Button):Void {
+	private static function clipdiv2(button:Button):Boolean {
 		
 		var $img:MovieClip = button.movie.backgroundImage;
-		if ($img == null) return;
+		if ($img == null) return false;
 		
 		var height:Number = $img._height / 2,
 		width:Number = $img._width;
@@ -67,6 +70,7 @@ class bada.dom.element.Button extends Div{
 		$img._y = height * -1;
 		
 		button.style.height = height;
+		return true;
 	}
     
 	private function renderText(button:Button) {
@@ -83,15 +87,8 @@ class bada.dom.element.Button extends Div{
 			css.width = button.width;
 		}
 		
-		/*button._span = new Span(button._text, css);		
-		button._span._parent = button;			
-		button._children.push(button._span.render());
-		*/
-		
-		button.style.padding = [5, 10, 5, 10];
-		
-		button.append(new Span(button._text, css));
-		//BackgroundHelper.render2(button);
+		button.style.padding = [5, 10, 5, 10];		
+		button.append(new Span(button._text, css));		
 	}
 
 }

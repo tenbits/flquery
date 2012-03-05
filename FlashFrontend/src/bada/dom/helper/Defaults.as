@@ -24,9 +24,23 @@ class bada.dom.helper.Defaults
 				return true;
 			case 'fontSize':
 				return 20;
+			case 'scale':
+				return 100;
+			case 'rotation':
+				return 0;
+			case 'alpha':
+				return 100;
 		}
 		
 		return null;
 	}
 	
+	static function extend(css:Object):Object {
+		for (var key in css) {
+			if (css[key] == null) {
+				css[key] = Defaults.get(key);
+			}
+		}
+		return css;
+	}
 }

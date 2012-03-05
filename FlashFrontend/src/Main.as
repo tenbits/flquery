@@ -5,6 +5,7 @@ import bada.dom.NodesFactory;
 import bada.Events;
 import bada.Proxy;
 import bada.Utils;
+import css.ApplicationCSS;
 import views.MainView;
 import views.MenuView;
 import org.flashdevelop.utils.FlashConnect;
@@ -28,6 +29,8 @@ class Main
 		//NodesFactory.controls['infoView'] = InfoView;
 		
 		var start = getTimer();
+		
+		ApplicationCSS.setup();		
 		Application.startApp();
 		
 		Bada.log('AppStart', getTimer() - start);		

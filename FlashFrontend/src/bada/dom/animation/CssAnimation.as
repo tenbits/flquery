@@ -1,4 +1,5 @@
 import bada.dom.element.Div;
+import bada.dom.element.INode;
 import caurina.Rotator;
 import caurina.transitions.Tweener;
 import flash.geom.Point;
@@ -9,7 +10,7 @@ import flash.geom.Point;
 class bada.dom.animation.CssAnimation
 {
 	private var _index:Number;
-	private var _current:Div;
+	private var _current:INode;
 	public var loop:Boolean;
 	public var onEnd:Function;
 	
@@ -34,12 +35,16 @@ class bada.dom.animation.CssAnimation
 	}
 	
 	
-	public function start(target:Div, time:Number, loop:Boolean) {
-		this.time = time;
+	function start(target:INode, seconds:Number, loop:Boolean) {
+		this.time = seconds;
 		
 		this._current = target;		
 		this._index = -1;
-		this.onframe();
+		this.onframe();		
+	}
+	
+	function stop() {
+		this._current.animate(false);
 	}
 	
 	private function onframe() {

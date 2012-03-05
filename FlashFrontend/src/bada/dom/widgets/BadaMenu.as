@@ -18,18 +18,22 @@ class bada.dom.widgets.BadaMenu extends Div
 	
 	public function BadaMenu(parent:Div, data:Object) 
 	{
-		super(parent, data);
+		if (data == null) data = { };
+		data._css = {
+			height: 160
+		};
 		
+		super.init(parent, data);	
 		Instance = this;
-		this.y = this._parent.height - 54;
+		this.y = Bada.screen.height - 46;
 		
-		append([ {
+		this._tagName = 'badaMenu';
+		this.append([ {
 			_name:'menuPanel',
 			_css: {
 				width:this.width,
 				height:this.height,
-				backgroundImage: 'buttons.btn_menu_on.png',
-				//align:'horizontal',
+				backgroundImage: 'ex.menu_on.png',
 				display:'none'
 			}
 		},{
@@ -37,48 +41,47 @@ class bada.dom.widgets.BadaMenu extends Div
 			_css: {
 				width:130,
 				height:60,
-				x: (_parent.width - 130) / 2,
-				y: 0,
-				backgroundImage: 'buttons.btn_menu_off.png'
+				x: (Bada.screen.width - 130) / 2,
+				y: -10,
+				backgroundImage: 'ex.menu_off.png'
 			}
 		}]);
 		
 		
 		
-		var panel = this.first('menuPanel').append(data.items);
+		var panel:Div = this.first('_menuPanel').asDiv();
 		
-		
-		
-		var cell_width = 480 / 2;
-		for (var i = 0; i < data.i_tems.length; i++) {
+		var cell_width = 480 / 3;
+		for (var i = 0; i < data.items.length; i++) {
 			
-			var item = data.i_tems[i];
+			var item = data.items[i];
 			panel.append( [{
 				_name: item._name,
 				_css: {
 					width: cell_width,
 					height: 100,
 					x:cell_width * item.position,
-					y:60,
+					y:68,
 					display: item.visible == false ? 'none' : 'block'
 				},
 				_children:[ {
-					tag:'button',
 					_css: Helper.extend(item._css, {
-						x: (cell_width - item._css.width) / 2
-					})
+						x: (cell_width - (item._css.width || 64)) / 2
+					}),
+					hover: {
+						scale:95,
+						alpha:80
+					}	
 				},{
 					tag:'span',
 					_text:item.label,
 					_css: {
-						y: item._css.height - 5,
-						autoSize: 'center',
+						y: 64,
+						textAlign: 'center',
 						width: cell_width,
 						height:25,
 						color:0x222222,
-						fontSize:20,
-						italic:true,
-						bold:true
+						fontSize:20
 						
 					}
 				}]
@@ -88,7 +91,7 @@ class bada.dom.widgets.BadaMenu extends Div
 		panel.children().eval('bind', 'touchEnd', Function.bind(this.itemClicked, this));
 		
 		
-		this.first('btnMenuOpen').bind('touchEnd', Function.bind(this.open, this));
+		this.first('_btnMenuOpen').bind('touchEnd', Function.bind(this.open, this));
 		
 		this.delegateClose = Function.bind(this.close, this);
 		this.onSelect = data.onSelect;
@@ -97,11 +100,11 @@ class bada.dom.widgets.BadaMenu extends Div
 	}
 	
 	public function open() {
-		this.first('btnMenuOpen').toggle(false);
-		this.first('menuPanel').toggle(true);
+		this.first('_btnMenuOpen').toggle(false);
+		this.first('_menuPanel').toggle(true);
 		
 		this.animate( {
-			y: this._parent.height - this.height,
+			y: Bada.screen.height - this.height,
 			transition:'easeoutexpo',
 			time:.2
 		});
@@ -114,9 +117,9 @@ class bada.dom.widgets.BadaMenu extends Div
 		
 		Dom.body.unbind(this.delegateClose);
 		
-		this.first('btnMenuOpen').toggle(true);
+		this.first('_btnMenuOpen').toggle(true);
 		this.animate( {
-			y: this._parent.height - 54,
+			y: Bada.screen.height - 46,
 			transition:'easeoutexpo',
 			time:.2,
 			onComplete: Function.bind(function() {
@@ -151,7 +154,7 @@ class bada.dom.widgets.BadaMenu extends Div
 	}
 	
 	public function active(names:Object, status:Boolean):Void {
-		var items = this.first('menuPanel')._children;
+		var items = this.first('_menuPanel')._children;
 		
 		for (var i = 0; i < items.length; i++) {
 			if (names instanceof Array){
@@ -171,7 +174,7 @@ class bada.dom.widgets.BadaMenu extends Div
 	}
 	
 	public function visible(names:Object, status:Boolean):Void {
-		var items = this.first('menuPanel')._children;
+		var items = this.first('_menuPanel')._children;
 		
 		for (var i = 0; i < items.length; i++) {
 			if (names instanceof Array){

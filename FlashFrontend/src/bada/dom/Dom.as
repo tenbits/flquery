@@ -29,6 +29,9 @@ class bada.dom.Dom {
 		NodesFactory.controls['img'] = Img;
 		NodesFactory.controls['input'] = Input;
 		NodesFactory.controls['checkbox'] = CheckBox;
+		NodesFactory.controls['combobox'] = ComboBox;
+		NodesFactory.controls['slideSelect'] = SlideSelect;
+		NodesFactory.controls['toggleSlide'] = ToggleSlide;
 		
 		NodesFactory.controls['view'] = View;
 		NodesFactory.controls['badaMenu'] = BadaMenu;

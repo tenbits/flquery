@@ -207,7 +207,7 @@ class bada.dom.css.StyleSheet
 	}
 	public function set x(value):Void {
 		if (typeof value === 'string')  {
-			if (value.charAt(value.length - 1) == '%') {				
+			if (value === '50%') {				
 				this._x = (this._node.parent.width - this._node.width) / 2
 			}
 			else this._x = parseInt(value);
@@ -218,7 +218,12 @@ class bada.dom.css.StyleSheet
 		return this._y || 0;
 	}
 	public function set y(value):Void{
-		if (typeof value  === 'string') this._y = parseInt(value);
+		if (typeof value  === 'string') {
+			if (value === '50%') {				
+				this._y = (this._node.parent.height - this._node.height) / 2;
+			}
+			else this._y = parseInt(value);
+		}
 		else this._y = value;
 	}
 	public function get width():Number{
@@ -232,7 +237,7 @@ class bada.dom.css.StyleSheet
 				this._width = parents * percent / 100;
 				return;
 			}
-			this._width = parseInt(String(value));
+			this._width = parseInt(String(value),10);
 			return;
 		}
 		this._width = Number(value);
@@ -244,15 +249,14 @@ class bada.dom.css.StyleSheet
 		return this._height;
 	}
 	public function set height(value):Void {
-		if (typeof value === 'string') {
-			
+		if (typeof value === 'string') {			
 			if (String(value).charAt(String(value).length - 1) === '%') {
 				var parents:Number = this._node.parent.height,
 				percent = parseInt(String(value).substring(0, String(value).length - 1), 10);
 				this._height = parents * percent / 100;
 				return;
 			}
-			this._height = parseInt(String(value));
+			this._height = parseInt(String(value),10);
 			return;
 		}
 		this._height = Number(value);
@@ -268,14 +272,17 @@ class bada.dom.css.StyleSheet
 		}
 		if (typeof value === 'string') {
 			value = String(value).split(' ');
+			/*this.marginTop = parseInt(value[0]) || 0;
+			this.marginRight = parseInt(value[1]) || 0;
+			this.marginBottom = parseInt(value[2]) || 0;
+			this.marginLeft = parseInt(value[3]) || 0;	
+			return;*/
 		}
 		if (value instanceof Array) {
 			this.marginTop = value[0] || 0;
 			this.marginRight = value[1] || 0;
 			this.marginBottom = value[2] || 0;
-			this.marginLeft = value[3] || 0;	
-			
-			Bada.log('this.marginTop', this.marginTop);
+			this.marginLeft = value[3] || 0;				
 			return;
 		}		
 	}

@@ -7,7 +7,9 @@ class bada.dom.helper.XmlParser
 {
 	
 	public static function parseHtml(html:String):Array {	
-		var xml:XML = new XML(html);
+		var xml:XML = new XML();
+		xml.ignoreWhite = true;
+		xml.parseXML(html);
 		var array:Array = [];
 		for (var i:Number = 0; i < xml.childNodes.length; i++) 
 		{
@@ -53,8 +55,13 @@ class bada.dom.helper.XmlParser
 			for (var i:Number = 0; i < xml.childNodes.length; i++) 
 			{
 				var value = parseNode(xml.childNodes[i]);
-				if (typeof value == 'string') node._html += value;
-				else if (typeof value == 'object') node._children.push(value);				
+				if (typeof value === 'string') {
+					node._children.push( {
+						tag:'span',
+						_html: value
+					});
+				}
+				else if (typeof value === 'object') node._children.push(value);				
 			}
 		}
 		
@@ -62,10 +69,10 @@ class bada.dom.helper.XmlParser
 		return node;
 	}
 	
-	private static function handleAttribute(node:Object, key:String, value:String):Boolean {
+	private static function handleAttribute(node:Object, key:String, value:Object):Boolean {
 		switch(key) {
 			case 'style':
-				StyleParser.parseStyle(node, value);
+				StyleParser.parseStyle(node, String(value));
 				return true;
 			case 'id':
 				node._id = value;
@@ -79,7 +86,7 @@ class bada.dom.helper.XmlParser
 				 *  color,opacity?
 				 *  {resourcePath to bg image}
 				 */
-				parseStyleBackground(node, value);
+				parseStyleBackground(node, String(value));
 				return true;
 			case 'border':
 				if (value.indexOf('borderImage') === 0) {
@@ -94,7 +101,13 @@ class bada.dom.helper.XmlParser
 			case 'class':
 				node._class = value;				
 				return true;
+			case 'hover':
+				node.hover = value;
+				return true;
 		}
+		
+		if (value == 'true')  value = true;
+		if (value == 'false') value  = false;
 		
 		if (key.indexOf('data-') == 0) {
 			key = key.substring(5, key.length - 1);
@@ -103,16 +116,7 @@ class bada.dom.helper.XmlParser
 			return true;
 		}
 		
-		
-		if (value == 'true') {
-			node[key] = true;
-			return true;
-		}
-		if (value == 'false') {
-			node[key] = false;
-			return true;
-		}
-		
+		node[key] = value;
 		return false;
 	}
 	

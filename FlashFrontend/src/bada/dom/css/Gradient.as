@@ -11,6 +11,10 @@ class bada.dom.css.Gradient
 	
 	public var x:Number;
 	public var y:Number;
+	public var type:String;
+	
+	public var width:Number;
+	public var height:Number;
 	
 	public function Gradient(gradient:Object) 
 	{
@@ -22,6 +26,10 @@ class bada.dom.css.Gradient
 		this.ratios = gradient.ratios;
 		this.alphas = gradient.alphas;
 		this.radius = gradient.radius;
+		this.type = gradient.type || 'linear';
+		
+		if (gradient.width)  this.width = gradient.width;
+		if (gradient.height)  this.height = gradient.height;
 		
 		if (this.ratios == null) {
 			var step = 255 / (this.colors.length - 1), ratio = 0;
@@ -44,8 +52,8 @@ class bada.dom.css.Gradient
 		if (this.radius == null) this.radius = 0;
 		
 		
-		this.x = 0; 
-		this.y = 0;		
+		this.x = gradient.x || 0; 
+		this.y = gradient.y || 0;		
 	}
 	
 	private static function parseString(value:String):Object {
@@ -82,4 +90,17 @@ class bada.dom.css.Gradient
 		}
 		return backgroundGradient;
 	}
+	
+	/*public function getMatrix(width:Number, height:Number):Object {
+		if (this.type == 'linear') {
+			return {
+				matrixType: "box",
+				x: gradient.x,
+				y: gradient.y,
+				w: gradient.width || width,
+				h: gradient.height || height,
+				r: gradient.radius
+			};
+		}
+	}*/
 }

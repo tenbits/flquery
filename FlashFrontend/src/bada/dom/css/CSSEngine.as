@@ -29,10 +29,6 @@ class bada.dom.css.CSSEngine
 		height:Number = node.height,
 		movie:Object = node.movie || node.textField;
 		
-		
-		
-		
-		
 		for (var prop in css) {
 			if (prop == 'width' || prop == 'height') continue;
 			
@@ -40,11 +36,13 @@ class bada.dom.css.CSSEngine
 				case 'bottom':
 				case 'top':
 				case 'y':
+					if (css[prop] === '50%')  node.style.y = css[prop];
 					movie._y = node.style.y;
 					continue;
 				case 'right':
 				case 'left':
 				case 'x':	
+					if (css[prop] === '50%') node.style.x = css[prop];
 					movie._x = node.style.x;
 					continue;				
 				case 'display':				
@@ -65,7 +63,13 @@ class bada.dom.css.CSSEngine
 			node.applyCss(prop, node.style[prop]);
 		}
 		
-		if (css.backgroundColor != null || css.backgroundGradient != null || css.border != null || css.boxShadow != null) {
+		if (css.hasOwnProperty('backgroundColor') ||
+			css.hasOwnProperty('backgroundGradient') || 
+			css.hasOwnProperty('border') || 
+			css.hasOwnProperty('boxShadow') ||
+			css.hasOwnProperty('borderImage')) {
+				
+			
 			BackgroundHelper.render2(node.asDiv());			
 		}	
 		
@@ -134,9 +138,17 @@ class bada.dom.css.CSSEngine
 		
 		if (img == null)  return null;
 		
-		if (css.backgroundPosition != null) {            
-			img._x = css.backgroundPosition.x;
-			img._y = css.backgroundPosition.y;
+		if (css.backgroundPosition != null) {
+			var x = css.backgroundPosition.x,
+			y = css.backgroundPosition.y;
+			if (typeof  x === 'string' && x == 'center') {
+				x = (node.parent.width - img._width) / 2;			
+			}
+			if (typeof  y === 'string' && y == 'center') {
+				y = (node.parent.height - img._height) / 2;			
+			}
+			if (typeof x === 'number') img._x = x;
+			if (typeof y === 'number') img._y = y;
 		}
 		
 		if (css.backgroundRepeat === 'repeat') {			
@@ -148,8 +160,8 @@ class bada.dom.css.CSSEngine
 			img._height = node.height;	
 		}
 		
-		if (css.width == null) css.width = img._width;
-		if (css.height == null) css.height = img._height;
+		if (css.width == null)  css.width = (node.style.width  = img._width);			
+		if (css.height == null) css.height = (node.style.height = img._height);
 	}
 	
 	
@@ -158,7 +170,7 @@ class bada.dom.css.CSSEngine
 		return StyleSheets.getCss(node);		
 	}
 	
-	static function calculateCss(node:INode, css:Object) {
+	static function calculateDimension(node:INode, css:Object) {
 		if (css.width != null) {
 			if (typeof css.width === 'string' && css.width.charAt(css.width.length - 1) == '%') {
 				var percent = parseInt(css.width.substring(0, css.width.length - 1), 10);
@@ -188,7 +200,9 @@ class bada.dom.css.CSSEngine
 				node.style.height = css.height;
 			}
 		}
-		
+	}
+	
+	static function calculateCss(node:INode, css:Object) {
 		for (var key in css) {			
 			switch(key) {
 				case 'width':

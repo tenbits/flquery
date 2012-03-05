@@ -10,6 +10,11 @@ class bada.dom.css.BorderImage
 	public var borderWidth:Number;
 	public var crop:Rectangle;
 	
+	public var borderWidthTop:Number;
+	public var borderWidthRight:Number;
+	public var borderWidthBottom:Number;
+	public var borderWidthLeft:Number;
+	
 	public function BorderImage(value) 
 	{
 		if (typeof value === 'string') {
@@ -22,7 +27,6 @@ class bada.dom.css.BorderImage
 		}
 		this.source = value[0];
 		this.borderWidth = value[1];
-		
 		this.crop = value[2];
 	}
 	

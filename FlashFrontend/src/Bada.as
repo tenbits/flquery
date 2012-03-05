@@ -6,7 +6,7 @@ class Bada {
 	public static var resources:Boolean = true;
 	public static var debug:Boolean = true;
 	public static var smallscreen:Boolean = false;
-	public static var multitouchEnabled:Boolean = true;
+	public static var multitouchEnabled:Boolean = false;
 	
 	
 	public static function log(){
@@ -14,8 +14,16 @@ class Bada {
 		
 		var args = Array.prototype.slice.call(arguments),
 		message = '';
-		for(var i = 0;i< args.length; i++){
-			message+=args[i] + ' ';
+		for (var i = 0; i < args.length; i++) {
+			if (typeof args[i] === 'object') {
+				message += '{\n';
+				for (var key in args[i]) {
+					message += '   ' + key + ' : ' + args[i][key] + '\n';
+				}
+				message += '} ';
+			}else{
+				message += args[i] + ' ';
+			}
 		}
 		
 		FlashConnect.trace(message);

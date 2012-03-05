@@ -19,19 +19,23 @@ class bada.dom.element.CheckBox extends Div
 			this.checked = !this.checked;
 			return false;
 		},this));
+		
 	}
 	
 	public function render() {
 		super.render();
-		
 		var $img:MovieClip = this._movie.backgroundImage;
 		if ($img != null){		
 			var height:Number = $img._height / 2,
 			width:Number = $img._width;
 			Utils.setMask(this._movie, width, height);		
 			$img._x = 0;
-			$img._y = this._checked ? 0 : height * -1;
+			$img._y = this._checked ? 0 : height * -1;			
 		}
+	}
+	
+	public function get height():Number {
+		return super.height / 2;
 	}
 	
 	public function get checked():Boolean 

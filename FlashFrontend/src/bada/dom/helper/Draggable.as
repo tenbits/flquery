@@ -6,7 +6,7 @@ import flash.geom.Rectangle;
  * ...
  * @author tenbits
  */
-class bada.dom.helper.Draggable
+class bada.dom.helper.Draggable /** static */
 {
 	private static var _current:Div;	
 	private static var _currentBounds:Rectangle;
@@ -16,23 +16,19 @@ class bada.dom.helper.Draggable
 	private static var _deferredX:Number;
 	private static var _deferredY:Number;
 	
-	public function Draggable() 
-	{
-		
-	}
-
 	
-	public static function enable(div:Div, touchContext:Div) {
+	static function enable(div:Div, touchContext:Div) {
 		
 		if (touchContext != null){
 			touchContext.data('contextFor', div);
 			div = touchContext;
 			div.movie.hitArea = touchContext.movie;
-		}
-		
+		}		
 		div.bind('touchStart', moveStart);
 		div.bind('move', move);
 		Dom.body.bind('moveEnd', moveEnd);
+		
+		_current = div;
 	}
 	
 	private static function move(x:Number, y:Number) {
@@ -40,21 +36,18 @@ class bada.dom.helper.Draggable
 			x = _root._xmouse;
 			y = _root._ymouse;
 		}
-		
-		
 		if (_deferredX == null) _deferredX = 0;
 		if (_deferredY == null) _deferredY = 0;
 		_deferredX += -_lastX + x;
 		_deferredY += -_lastY + y;
 		
 		_lastX = x;
-		_lastY = y;
-		
-		
+		_lastY = y;		
 	}
 	
 	private static function refresh() {
 		var movie:MovieClip = _current.movie;
+		
 		if (_deferredX != null) {
 			var x = movie._x + _deferredX;			
 			
@@ -80,6 +73,7 @@ class bada.dom.helper.Draggable
 	}
 	
 	private static function moveStart(event:Event) {	
+		
 		var element:Div = event.target.asDiv(),
 		iscontextFor:Div = Div(element.data('contextFor'));
 		
@@ -91,7 +85,8 @@ class bada.dom.helper.Draggable
 	}
 	
 	private static function moveEnd() {
-		_current.trigger('moveEnd');
+		_current.trigger('draggEnd');
+		
 		delete _current.movie.onEnterFrame;
 		_lastX = null;
 		_lastY = null;

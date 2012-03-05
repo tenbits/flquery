@@ -1,6 +1,8 @@
 import bada.dom.element.Div;
+import bada.dom.element.INode;
 import bada.dom.helper.Draggable;
 import bada.dom.element.Span;
+import caurina.transitions.Tweener;
 import flash.geom.Rectangle;
 
 /**
@@ -9,31 +11,43 @@ import flash.geom.Rectangle;
  */
 class bada.dom.widgets.SlideSelect extends Div
 {
-	private var _data:Object;
+	private var _items:Array;
 	private var $head:Div;
 	private var $line:Div;
-	public function SlideSelect(data) 
+	public function SlideSelect(parent:Div, data:Object) 
 	{
-		super.init.apply(this, arguments);
 		this._tagName = 'slideSelect';
 		
-		this.append( [ {
-				_css: {
-					backgroundImage: 'view-settings.slider_line.png',
-					height: 10,
-					width: 250,
-					bottom: 17,
-					x: '50%'
-				},
-				_children:[ {		
-						_name: 'sliderHead',
-						_css: {
-							backgroundImage: 'view-settings.slider_head.png',
-							height: 42,
-							y: - 17
-						}
-				}]
-			}]);	
+		this._items = data._children;
+		
+		delete data._children;
+		
+		super.init(parent, data);
+		
+		
+		this.append( {
+			_name: 'line',
+			_css: {
+				backgroundImage: 'ex.slider_line.png',
+				backgroundSize:'stretch',
+				height: 10,
+				width: this.width - 40,
+				x: 20,
+				bottom: 17
+			},
+			_children: [{		
+					_name: 'sliderHead',
+					_css: {
+						backgroundImage: 'ex.slider_head.png',
+						height: 42,
+						y: - 17
+					}
+			}]
+		});
+		
+		
+		
+		this.onresize();
 		
 		
 		
@@ -41,51 +55,50 @@ class bada.dom.widgets.SlideSelect extends Div
 			x: Number = (this.width - width) / 2,
 			ceil = width / 3;
 		
-		for (var i:Number = 0; i < data.gauge.length; i++) 
+		for (var i:Number = 0; i < this._items.length; i++) 
 		{
-			this.append((new Span(data.gauge[i], {
+			this.append(new Span(this._items[i].value, {
 				width:ceil,
 				//height:30,
 				x: x + ceil * i + 6,
 				fontSize: 20,
-				fontFamily:'src.resources.AGENCYB.TTF',
-				//backgroundColor:([0xff0000, 0x00ff00, 0x0000ff])[i],
 				textAlign:'center'
-			})));
+			}));
 		}
 		
-		this.find('_sliderHead').bind('moveEnd', Function.bind(this.moveEnd, this));
-		
-		this._data = data;
+		this.find('_sliderHead').bind('draggEnd', Function.bind(this.moveEnd, this));		
 	}
 	
 	private function onresize() {	
+		var $head:Div = this.find('_sliderHead').asDiv();
+		if ($head == null) return;
 		
-		var line:MovieClip = this._children[0].movie,
-		$head:Div = this.find('_sliderHead').asDiv(),
+		var line:INode = this.find('_line'),
 		head = $head.movie,
-		rect:Rectangle = new Rectangle(0, head._y, line._width - head._width, 0);
+		rect:Rectangle = new Rectangle(0, head._y, line.width - head._width, 0);
 		
 		$head._css.draggable = rect;		
+		
+		
 		Draggable.enable($head, Div(this));
 		
-		if (this._data.selected) {
+		if (this.data('selected')) {
 			var pos = 0;
-			for (var i = 1; i < this._data.gauge.length; i++) {
-				if (this._data.gauge[i] == this._data.selected) {
+			for (var i = 1; i < this._items.length; i++) {
+				if (this._items[i] == this.data('selected')) {
 					pos = i;
 					break;
 				}
 			}
 			if (pos != null) {
-				var step:Number = ( line._width + head._width) / this._data.gauge.length;
+				var step:Number = ( line.width + head._width) / this._items.length;
 				head._x = step * pos;
 			}
 		}
 	}
 	
 	private function moveEnd() {
-		if (this._data.gauge == null) return;
+		if (this._items == null) return;
 		var lineMovie: MovieClip = this._children[0]._movie,
 		//-headMovie: MovieClip = this._children[1]._movie;
 		$head:Div = this.find('_sliderHead').asDiv(),
@@ -96,7 +109,7 @@ class bada.dom.widgets.SlideSelect extends Div
 		var currentPos:Number = headMovie._x;
 		var width:Number = lineMovie._width + headMovie._width;
 		
-		var step:Number  = width / this._data.gauge.length;
+		var step:Number  = width / this._items.length;
 		
 		var floor:Number = Math.floor(currentPos / step) * step;
 		var ceil:Number = floor + step;
@@ -106,7 +119,7 @@ class bada.dom.widgets.SlideSelect extends Div
 		
 		
 		var pos = (dfloor < dceil ? floor : ceil);
-		$head.animate( {
+		Tweener.addTween($head.movie,{
 			_x: pos,
 			time:.2
 		});

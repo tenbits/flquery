@@ -1,13 +1,8 @@
-import bada.dom.animation.CssAnimation;
 import bada.dom.Dom;
-import bada.dom.element.Div;
-import bada.dom.element.INode;
 import bada.dom.StyleSheets;
+import bada.dom.widgets.BadaMenu;
 import bada.dom.widgets.Launcher;
 import bada.dom.widgets.View;
-import bada.Graphics;
-import bada.Utils;
-import bada.views.DebugView;
 /**
  * ...
  * @author tenbits
@@ -16,129 +11,102 @@ class Application
 {
 	
 	static function startApp() {
-		
-		
-		
 		/* #region CSS */ { 
 		StyleSheets.register(
-			'#viewMenu > div', {
-				backgroundColor:0xff0000,
-				position:'static',
-				borderRadius:20,
-				margin:20,
-				padding:10,
-				border:[2,0x00ff00, 90]
-			},
-			'#subGradient', {
-				height:200
-			},
-			'#viewMenu > div > span',{
-				color:0xffffff,
-				fontSize:40,
-				position:'static',
-				textAlign:'center'
-			},
-			'button', {
-				display:'inline-block',
-				color:0xffffff,
-				fontSize: 40,
-				x: '50%', 
-				position:'static',
-				backgroundGradient: {
-					colors: [0x555555, 0x303030],
-					radius: Math.PI / 2
-				},
-				borderRadius: 12,
-				border: [1, 0]
-			},
-			'button.active', {
-				backgroundGradient: {
-					colors: [0x111111, 0x444444],
-					radius: Math.PI / 2
-				}
-			},
+			'#menuView', {
+				padding: [70, 30, 10, 30]
+			},			
 			'#mainView', {
 				backgroundColor: 0xBADA55,
-				backgroundImage: 'noise.png',
+				backgroundImage: 'ex.background.noise.png',
 				backgroundRepeat: 'repeat'
-			},
-			'.title', {
-				backgroundColor:0xff0000,
-				color:0xfafafa,
-				fontSize: 29,
-				textAlign: 'center'
 			});
 		}
 		
 		Dom.body.append("
-			<menuView id='viewMenu' background='carbon.png repeat'>
-				<div id='subGradient' background='gradient(0xff0000,0x00ff00,0x0000ff)'/>
-				<div> 					
-					<span><b>Hello</b> <i>world!</i></span>
-					</div>
-				<div style='height:100;'/>	
-				<button id='btnSample'>Sample</button>
+			<menuView id='menuView' background='ex.background.test.png repeat'>
+				<div class='header'>Sample Application</div>
+				<div	style = 'height:40; position:static; borderRadius:15;' 
+					border = '1 0x555555' 
+					background = 'gradient(0xff0000,0x00ff00,0x0000ff)' />
+					
+				<div class='group'>
+					<div class='group-header'>Grouped List</div>
+					<div name='listview'>
+						<div class='item' hover='hover' id='tr'>
+							<span style='x:50; y:50%;'>CheckBox</span>
+							<checkbox background='ex.checkbox.png' style='right:50; y:50%;'/>
+							</div>
+						<div class='divider'/>
+						<div class='item' hover='hover'>
+							<span style='x:50; y:50%;'>ComboBox</span>
+							<combobox style='right:50; y:50%;'>
+								<item active='true' value='1' action='1'/>
+								<item value='2' action='2'/>
+								<item value='3' action='3'/>
+							</combobox>
+							</div>
+						<div class='divider' />
+						<div class='item'>
+							<span style='x:50; y:50%;'>Button</span>
+							<button hover='hover' style='right:50; y:50%;'>Sample</button>
+						</div>
+						<div class='divider' />
+						<div class='item'>
+							<slideSelect style='position:static;y:50%; height: 60; margin:0 50 0 50;'>
+								<item value='One'/>
+								<item value='Two'/>
+								<item value='Three'/>
+							</slideSelect>
+						</div>
+						<div class='divider' />
+						<div class='item'>
+							<span style='x:50; y:50%;'>ToggleSlide</span>
+							<toggleSlide style='right:50; y:50%;' />
+						</div>
+						<div class='divider' />
+						<div class='item'>
+							<span style='x:50; y:50%;'>Input</span>
+							<input _text = 'Input' style='color:0xffffff; width: 50%; right: 30; height: 40; y: 50%;' />							
+						</div>
+						<div class='divider' />
+						<div class='item'>
+							<span style='x:50; y:50%;'>Forms</span>
+							<button class='green' id='btnMainView' hover='hover' style='right:50; y:50%;'>Main View</button>
+						</div>
+						</div>
+					</div>			
 			</menuView>
-			<mainView id='mainView'><span class='title'>Main View</span></mainView>
+			<mainView id='mainView'>
+				<div class='header'>
+					<button>back</button>
+					<span>Main View</span></div>
+				<div class='spinner' style='x:50%; y:50%;'></div>
+				</mainView>
 			");
 		
-		Dom.body.find('#btnSample').hover(function(button:INode) {
-			button.addClass('active');
-		}, function(button:INode) {
-			button.removeClass('active');
-		}).touchEnd(function() { 
-			View.open('mainView');			
-		});
+		Dom.body.find('#btnMainView').touchEnd( View.open.bind(View, 'mainView'));
 		
-		DebugView.setup();		
-		setTimeout(function() {
-			Dom.body.find('#viewMenu').find('span').asSpan().html('Hello <br/> world!');						
-			setTimeout(function() {
-				Dom.body.find('#viewMenu').children().get(1).append(new Div( {
-					_css: {
-						position:'static',
-						height:100,
-						width:200,
-						backgroundColor:0x000000
-					}
-				}));
-			}, 1000);
-			
-		}, 1000);
+		
+		//DebugView.setup();			
 		
 		Launcher.remove();	
-		View.setupMain('viewMenu');
+		View.setupMain('menuView');	
 		
-		
-		var div:Div = (new Div( {
-			backgroundColor:0xffffff,
-			width:100,
-			height:100,
-			x: '50%',
-			y:40,
-			borderRadius:12,
-			boxShadow: '0 0 6 6 0xff0000'
-		})).appendTo(Dom.body.find('#mainView').asDiv());
-		
-		var rotation:CssAnimation = new CssAnimation( {
-			_0: {
-				rotation: 0
-			},
-			_40: {
-				rotation: 45				
-			},
-			_60: {
-				rotation: 90
-			},
-			_80: {
-				rotation: 180
-			},
-			_100: {
-				rotation: 360
-			}
-		});
-		
-		rotation.start(div, 10);
-		
+		var badaMenu = (new BadaMenu(Dom.body, {
+			items:[ {
+				_css: { backgroundImage: 'ex.icon-1.png' },
+				label: 'Icon',
+				position: 0
+			},{
+				_css: { backgroundImage: 'ex.icon-2.png' },
+				label: 'Tree',
+				position: 1
+			},{
+				_css: { backgroundImage: 'ex.icon-3.png' },
+				label: 'Smile',
+				position: 2
+			}]
+		}));
 	}
 }

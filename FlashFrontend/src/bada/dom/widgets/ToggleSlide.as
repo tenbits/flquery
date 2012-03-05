@@ -8,33 +8,38 @@ import bada.dom.helper.XmlParser;
  */
 class bada.dom.widgets.ToggleSlide extends Div
 {
-	private var _width:Number;
 	private var _sliderWidth:Number;
 	private var _status:Boolean;
 	private var _slider:Div;
 	
-	public function ToggleSlide() 
+	public function ToggleSlide(parent:Div, data:Object) 
 	{
-		var data:Object = super.init.apply(this, arguments);		
-		//this._css.backgroundImage = 'view-menu.panel_player.png';		
-		this.append("<div style='x:5;' background='view-menu.slider_player.png'></div>");		
+		this._tagName = 'toggleSlide';
+		data._css.backgroundImage = 'ex.toggleslide.png';
+		super.init(parent, data);	
+		
+		this.append( {
+			_css: {
+				x: 5,
+				backgroundImage : 'ex.slider_head.png'
+			}
+		});
+		
 		this.bind('touchEnd', Function.bind(this.toggle, this));	
 		this._status = data.status;
-	}
-	
-	private function onresize() {	
+		
 		this._slider = this.first('div').asDiv();
 		this._sliderWidth = this._slider.width;
-		this._width = this.width;
 		
-		this._slider._movie._x =  this._status ? 5 : this._width - this._sliderWidth - 5
+		this._slider.x =  this._status ? 5 : this.width - this._sliderWidth - 5
 		
 	}
+	
 	
 	private function toggle() {
 		this._status = !this._status;
 		this._slider.animate( {
-			x: this._status ? 5 : this._width - this._sliderWidth - 5,
+			x: this._status ? 5 : this.width - this._sliderWidth - 5,
 			time: 1,
 			transition:'easeinout'
 		});

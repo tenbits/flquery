@@ -22,6 +22,8 @@ class bada.dom.element.Span extends INode{
 		this._tagName = 'span';
 		super.init.apply(this, arguments);
 		
+		this.style.display = 'inline-block';
+		
 		/*this.style.height = -1; // 'auto';
 		this.style.width = -1; // 'auto';*/
 		
@@ -122,18 +124,13 @@ class bada.dom.element.Span extends INode{
 		this._classes = StyleSheets.getClasses(this);
 		this._mergedCss = this._classes == null ? this._css : Helper.extend(StyleSheets.combineClasses(this._classes), this._css);
 		
-		this.style.inheritCss(this.parent.style, this._mergedCss);	
+		CSSEngine.calculateDimension(this, this._mergedCss);
+		this.style.inheritCss(this.parent.style, this._mergedCss);			
+		CSSEngine.calculateCss(this, this._mergedCss);		
 		
-		
-		CSSEngine.calculateCss(this, this._mergedCss);
-		
-		
-		if (this.style.textShadow) {            
-			/*this._shadowSpan = (new Span(this._text)).appendTo(this._parent);  
-			this._parent._children.splice(this._parent._children.length - 1,1);
-			depth++;*/
+		/*if (this.style.textShadow) {            		
 			Shadow.renderTextShadow(this, this._html);
-		}
+		}*/
 		
 		var width = this.style.width < 0 ? 200 : this.style.width,
 		height = this.style.height < 0 ? 10 : this.style.height;
@@ -146,6 +143,7 @@ class bada.dom.element.Span extends INode{
 		this._textField.autoSize = true;
 		this._textField.selectable = false;
 		this._textField.condenseWhite = true;
+		
 		
 		if (this._html) {
 			this._textField.multiline = true;
@@ -165,8 +163,9 @@ class bada.dom.element.Span extends INode{
 			
 			var dy = (lineheight - height) / 2;
 			if (dy > 0) {
-				this._textField._y += dy;
+				this._textField._y = dy;
 			}
+			Bada.log('span', height, lineheight, this._html);
 		}
 		
 		/*if (this.style.lineHeight) {
@@ -197,7 +196,6 @@ class bada.dom.element.Span extends INode{
 		
 		if (this._parent._children == null) this._parent._children = [];
 		this._parent._children.push(this);
-		
 		
 		
 		return this;

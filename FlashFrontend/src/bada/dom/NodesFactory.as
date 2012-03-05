@@ -40,7 +40,7 @@ class bada.dom.NodesFactory{
 		if (typeof controls[data.tag] !== 'undefined') {
 			return new controls[data.tag](parent,data);            
 		}       
-		Bada.log('UNKNOWN DOM NODE',data.tag);
+		Bada.log('Error # UNKNOWN DOM NODE',data.tag);
 		return null;
     }
 }

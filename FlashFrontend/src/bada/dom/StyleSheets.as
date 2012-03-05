@@ -48,7 +48,7 @@ class bada.dom.StyleSheets
 			var _class:CssClass = ClassCollection[i];
 			if (_class.match(node)) {
 				if (array == null) array = [];
-				array.push(_class);
+				array.push(_class);				
 			}
 		}
 		return array;

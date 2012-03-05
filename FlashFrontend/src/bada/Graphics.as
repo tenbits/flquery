@@ -200,16 +200,19 @@ class bada.Graphics
 		movie.curveTo(rec.x, rec.y, rec.x + roundedCorner, rec.y);
 	}
 	
-	public static function drawBorderImage(movie:MovieClip, w:Number, h:Number, resource:String, border:Number,  cropped:Rectangle):BitmapData {
+	/**
+	 * @resource is a full path to the BitmapData resource
+	 */
+	static function drawBorderImage(movie:MovieClip, w:Number, h:Number, resource:String, border:Number,  cropped:Rectangle):BitmapData {
 		
 		if (w == null) w = movie._width;
 		if (h == null) h = movie._height;
 		
 		movie.clear();
-		var brd:MovieClip = Utils.attachMovie(movie, resource);
+		//var brd:MovieClip = Utils.attachMovie(movie, resource);
 		
-		var source:BitmapData = Graphics.fromMovie(brd);
-		brd.removeMovieClip();
+		var source:BitmapData = BitmapData.loadBitmap(resource);//Graphics.fromMovie(brd);
+		//brd.removeMovieClip();
 		
 		var target:BitmapData = new BitmapData(w, h, true, 0xffffff);
 		
@@ -221,6 +224,7 @@ class bada.Graphics
 		
 		/** border drawings */
 		target.copyPixels(source, new Rectangle(0, 0, border, border), new Point(0, 0));
+		
 		
 		var x:Number = border,
 		y:Number = border,
@@ -263,9 +267,8 @@ class bada.Graphics
 		center.dispose();
 		
 		/** end border drawings */
-		
-		
 		source.dispose();
+		
 		Graphics.drawOnMovie(target, movie);
 		return target;
 	}
@@ -343,7 +346,7 @@ class bada.Graphics
 	}
 	
 	public static function drawOnMovie(graphics:BitmapData, movie:MovieClip) {
-		movie.beginBitmapFill(graphics);
+		movie.beginBitmapFill(graphics, null, null, true);
 		movie.moveTo(0, 0);
 		movie.lineTo(graphics.width, 0);
 		movie.lineTo(graphics.width, graphics.height);

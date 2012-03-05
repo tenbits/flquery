@@ -21,8 +21,9 @@ class bada.Helper {
 	
 	public static function extendOnly(target:Object, source:Object, onlyKeys:Object):Object {
 		for (var key in onlyKeys) {
-			if (source[key] == null) continue;
-			target[key] = source[key];
+			if (target.hasOwnProperty(key) == false) target[key] = source[key];
+			else if (source[key] != null) target[key] = source[key];
+			
 		}
 		return target;
 	}
